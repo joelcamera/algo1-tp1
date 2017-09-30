@@ -1,0 +1,44 @@
+﻿Build started 10/06/2015 12:17:53.
+     1>Project "C:\Users\EmiHoss\Desktop\TPI\vs_build\game.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\src\cg_src\PlantMenu.cpp ..\src\cg_src\main.cpp
+         PlantMenu.cpp
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         main.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\EmiHoss\Desktop\TPI\vs_build\Debug\game.exe" /INCREMENTAL /NOLOGO SDL2.lib SDL2main.lib SDL2_image.lib SDL2_ttf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\EmiHoss\Desktop\TPI\vs_build\Debug\game.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\EmiHoss\Desktop\TPI\vs_build\Debug\game.lib" /MACHINE:X86 Debug\ActionPacked.obj
+         Debug\App.obj
+         Debug\CrearNivelesMenu.obj
+         Debug\CreateSpawnListMenu.obj
+         Debug\FunctionPtr.obj
+         Debug\main.obj
+         Debug\MainMenu.obj
+         Debug\NivelMenu.obj
+         Debug\PlantMenu.obj
+         Debug\VampMenu.obj
+         Debug\Auxiliares.obj
+         Debug\Flor.obj
+         Debug\Juego.obj
+         Debug\Nivel.obj
+         Debug\Vampiro.obj
+         game.vcxproj -> C:\Users\EmiHoss\Desktop\TPI\vs_build\Debug\game.exe
+       PostBuildEvent:
+         xcopy /y "C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\*.dll" "C:\Users\EmiHoss\Desktop\TPI\vs_build\Debug\"
+         :VCEnd
+         C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\libfreetype-6.dll
+         C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\libjpeg-9.dll
+         C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\libpng16-16.dll
+         C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\libtiff-5.dll
+         C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\libwebp-4.dll
+         C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\SDL2.dll
+         C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\SDL2_gfx.dll
+         C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\SDL2_image.dll
+         C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\SDL2_ttf.dll
+         C:\Users\EmiHoss\Desktop\TPI\vs_build\\dlls\zlib1.dll
+         10 File(s) copied
+     1>Done Building Project "C:\Users\EmiHoss\Desktop\TPI\vs_build\game.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.81

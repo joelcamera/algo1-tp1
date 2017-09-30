@@ -1,0 +1,12 @@
+\begin{tipo}{Flor}{}
+	\observador{vida}{f: Flor}{\ent}
+	\observador{cuantoPega}{f: Flor}{\ent}
+	\observador{habilidades}{f: Flor}{[Habilidad]}
+	\medskip
+	\invariante{sinRepetidos(habilidades(f))}
+	\invariante[lasHabilidadesDeterminanLaVidayElGolpe] {
+	\\
+	vidaDeFlorValida(vida(f), habilidades(f)) \wedge cuantoPegaFlorValido(cuantoPega(f), habilidades(f))
+}
+
+\end{tipo}

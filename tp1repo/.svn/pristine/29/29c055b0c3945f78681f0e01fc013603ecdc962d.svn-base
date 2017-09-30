@@ -1,0 +1,84 @@
+\documentclass[a4paper]{article}
+
+%\usepackage[spanish]{babel}
+\usepackage{soul}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+
+\input{page.layout}
+\usepackage{underscore}
+\usepackage{caratula}
+\usepackage{url}
+
+\begin{document}
+
+\thispagestyle{empty}
+\materia{Algoritmos y Estructuras de Datos I}
+\submateria{Primer Cuatrimestre de 2015}
+\titulo{TPI}
+\subtitulo{}
+\integrante{Joel Esteban Camera}{257/14}{joel.e.camera@gmail.com}
+\integrante{Isakova, Olga}{779/14}{fallenapart@mail.ru}
+\integrante{Martinez, Marcelo}{501/82}{pcpower99@hotmail.com}
+\integrante{Valls, Marcelo}{108/14}{cmarcelovalls@hotmail.com}
+
+\maketitle
+\newpage
+
+\lstset{tabsize=2,numbers=left,numberstyle=\tiny,showstringspaces=false}
+
+\begin{center}
+\textsc{\Large \bfseries Types.h}
+\end{center}
+\lstinputlisting[language=C++]{Types.h}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Flor.h}
+\end{center}
+\lstinputlisting[language=C++]{Flor.h}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Flor.cpp}
+\end{center}
+\lstinputlisting[language=C++]{Flor.cpp}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Vampiro.h}
+\end{center}
+\lstinputlisting[language=C++]{Vampiro.h}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Vampiro.cpp}
+\end{center}
+\lstinputlisting[language=C++]{Vampiro.cpp}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Nivel.h}
+\end{center}
+\lstinputlisting[language=C++]{Nivel.h}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Nivel.cpp}
+\end{center}
+\lstinputlisting[language=C++]{Nivel.cpp}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Juego.h}
+\end{center}
+\lstinputlisting[language=C++]{Juego.h}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Juego.cpp}
+\end{center}
+\lstinputlisting[language=C++]{Juego.cpp}
+
+\end{document}

@@ -1,0 +1,111 @@
+#include "Flor.h"
+#include <cassert>
+
+using namespace std;
+
+
+Flor::Flor(){}
+
+Flor::Flor(Vida v, int cP, vector<Habilidad> hs)
+{
+	quitarRepetidosHabilidad(hs);
+
+	if(atacarPertenece(hs) == true){
+		this->_cuantoPega = 12 / hs.size();
+	} else {
+		this->_cuantoPega = 0;
+	}
+
+	this->_vida = 100 / (hs.size() + 1);
+	this->_habilidades = hs;
+}
+
+Vida Flor::vidaF()
+{
+	return _vida;
+}
+
+int Flor::cuantoPegaF()
+{
+	return _cuantoPega;
+}
+
+vector<Habilidad>& Flor::habilidadesF()
+{
+	return _habilidades;
+}
+
+void Flor::Mostrar(ostream& os) const
+{	
+}
+
+void Flor::Guardar(ostream& os) const
+{
+	os << "{ F ";
+
+	string strVida = to_string(this->_vida);
+	os << strVida << " ";
+
+	string strCuantoPega = to_string(this->_cuantoPega);
+	os << strCuantoPega << " [ ";
+
+	int i = 0;
+	
+	while (i < _habilidades.size()){
+		if(_habilidades.at(i) == 0){
+			os << "Generar ";
+		} else if(_habilidades.at(i) == 1){
+			os << "Atacar ";
+		} else{
+			os << "Explotar ";
+		}
+		i++;
+	}	
+	os << "] }";
+}
+
+void Flor::Cargar(std::istream& is)
+{
+}
+
+void Flor::quitarRepetidosHabilidad(std::vector<Habilidad>& hs){
+	int i = hs.size() - 1;
+	int contadorA = 0;
+	int contadorE = 0;
+	int contadorG = 0;
+
+	while(i >= 0){
+
+		if(hs.at(i) == Generar){
+			contadorG += 1;
+		} else if(hs.at(i) == Atacar){
+			contadorA += 1;
+		} else {
+			contadorE += 1;
+		}
+		hs.pop_back();
+		i--;
+	}
+
+	if(contadorG > 0){
+		hs.push_back(Generar);
+	}
+	if(contadorA > 0){
+		hs.push_back(Atacar);
+	}
+	if(contadorE > 0){
+		hs.push_back(Explotar);
+	}
+}
+
+bool Flor::atacarPertenece(vector<Habilidad> hs){
+	int i = 0;
+	bool res = false;
+
+	while(i < hs.size()){
+		if(hs.at(i) == Atacar)
+			res = true;
+		i++;
+	}
+	return res;
+}

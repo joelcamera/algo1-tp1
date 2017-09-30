@@ -1,0 +1,470 @@
+#include "Juego.h"
+#include "Vampiro.h"
+#include <iostream>
+
+using namespace std;
+
+int main(){
+
+  /*cout << " Trabajo practico Flores vs Vampiros" << endl;
+  
+  vector<Habilidad> hab;
+  hab.push_back(Atacar);
+  
+  vector<Habilidad> hab2;
+  hab2.push_back(Atacar);
+  hab2.push_back(Generar);
+  
+  vector<Habilidad> hab3;
+  hab3.push_back(Explotar);
+  hab3.push_back(Generar);
+  
+  Flor f(25,0,hab3);
+  
+  cout << f.vidaF() << ' ' << f.cuantoPegaF() << endl;
+  
+  Vampiro v(Caminante,50,50);
+  
+  cout << v.vidaV() << ' ' << v.cuantoPegaV() << endl;
+  
+  vector<VampiroEnEspera> spawn;
+  spawn.push_back(VampiroEnEspera(v,2,2));
+  
+  Nivel n(5,5,100,spawn);
+  
+  cout << n.solesN() << endl;
+  
+  n.agregarFlor(f, Posicion(2,2));
+  
+  cout << n.solesN() << endl;
+  
+  n.pasarTurno();
+  
+  cout << n.solesN() << endl;
+  
+  cout << n.terminado() << ' ' << n.obsesivoCompulsivo() << endl;
+  
+  
+  vector<Flor> fs;
+  fs.push_back(f);
+  
+  vector<Vampiro> vs;
+  vs.push_back(v);
+  
+  Juego j(fs,vs);
+  
+  j.agregarNivel(n);
+  
+  cout << j.muyDeExactas() << endl;
+*/
+	
+/* TEST CREACION DE NIVEL + GUARDAR/MOSTRAR -NO BORRAR-
+	
+	cout << "Comenzando ejecucion..." << endl;
+	Vida vida = 100;
+	ClaseVampiro cv = Caminante;
+	VampiroEnEspera v1 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 1);
+	VampiroEnEspera v2 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 2);
+	VampiroEnEspera v3 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 3);
+	VampiroEnEspera v4 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 4);
+	VampiroEnEspera v5 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 5);
+	VampiroEnEspera v6 = VampiroEnEspera(Vampiro(cv, vida, 10), 3, 5);
+	VampiroEnEspera v7 = VampiroEnEspera(Vampiro(cv, vida, 10), 2, 5);
+	std::vector<VampiroEnEspera> spawning = std::vector<VampiroEnEspera>();
+	spawning.push_back(v2);
+	spawning.push_back(v3);
+	spawning.push_back(v1);
+	spawning.push_back(v5);
+	spawning.push_back(v4);
+	spawning.push_back(v6);
+	spawning.push_back(v7);
+	cout << "Todo creado, se crea nivel" << endl;
+	Nivel nivel = Nivel(10, 10, 50, spawning);
+*/
+
+ /* ofstream osn;
+
+  nivel.Guardar(osn);
+  nivel.Mostrar(osn); */
+  
+
+
+  /* TEST DE GUARDAR 
+  std::vector<Habilidad> h1;
+  h1.push_back(Generar);
+  h1.push_back(Explotar);
+  h1.push_back(Explotar);
+  h1.push_back(Explotar);
+  h1.push_back(Explotar);
+  h1.push_back(Atacar);
+
+  Flor f1(10,10,h1);
+
+  std::vector<Habilidad> h2;
+  h2.push_back(Atacar);
+  h2.push_back(Atacar);
+  h2.push_back(Atacar);
+  h2.push_back(Atacar);
+  h2.push_back(Generar);
+  h2.push_back(Generar);
+  h2.push_back(Generar);
+  h2.push_back(Generar);
+
+  Flor f2(10,10,h2);
+
+  Flor f3,f4,f5,f6;
+  f3 = f1;
+  f4=f1;
+  f5 = f2;
+  f6 = f2;
+  ofstream osf("f.txt");
+
+  f.Guardar(osf);
+  //f.Mostrar(osf);
+  osf.close();
+
+  std::vector<Flor> flores;
+  flores.push_back(f1);
+  flores.push_back(f2);
+
+  Vampiro vamp1(Desviado,10,10);
+  Vampiro vamp2(Caminante,10,10);
+  Vampiro vamp3(Desviado,10,10);
+  Vampiro vamp4(Caminante,10,50);
+
+  std::vector<Vampiro> vamps;
+  vamps.push_back(vamp1);
+  vamps.push_back(vamp2);
+  vamps.push_back(vamp3);
+  vamps.push_back(vamp4);
+
+  ofstream osV("v.txt");
+
+  vamp.Guardar(osV);
+  osV.close();
+  */
+
+
+ /*TEST AGREGARFLOR, OBSESIVOCOMPULSIVO, PASAR TURNO
+
+  Vida vida = 100;
+  ClaseVampiro cv = Caminante;
+  VampiroEnEspera v1 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 1);
+  VampiroEnEspera v2 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 2);
+  VampiroEnEspera v3 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 3);
+  VampiroEnEspera v4 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 4);
+  VampiroEnEspera v5 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 5);
+  VampiroEnEspera v6 = VampiroEnEspera(Vampiro(cv, vida, 10), 3, 5);
+  VampiroEnEspera v7 = VampiroEnEspera(Vampiro(cv, vida, 10), 2, 5);
+  std::vector<VampiroEnEspera> spawning = std::vector<VampiroEnEspera>();
+  spawning.push_back(v2);
+  spawning.push_back(v3);
+  spawning.push_back(v1);
+  spawning.push_back(v5);
+  spawning.push_back(v4);
+  spawning.push_back(v6);
+  spawning.push_back(v7);
+  cout << "Todo creado, se crea nivel" << endl;
+  Nivel nivel = Nivel(10, 10, 50, spawning);
+
+	Flor a1=Flor(1, 1, {Atacar, Generar});
+	Flor a2=Flor(1, 1, {Atacar, Explotar});
+	Flor n1=Flor(1, 1, {Atacar});
+	Flor n2=Flor(1, 1, {Atacar});
+	nivel.agregarFlor(a1, Posicion(1,1));
+  nivel.agregarFlor(n2, Posicion(1,3));
+  nivel.agregarFlor(n1, Posicion(1,2));
+	nivel.agregarFlor(a2, Posicion(1,4));
+  nivel.agregarFlor(a2, Posicion(3,4));
+  nivel.agregarFlor(a2, Posicion(2,4));
+  nivel.agregarFlor(a2, Posicion(3,3));
+  nivel.agregarFlor(a2, Posicion(2,2));
+  nivel.agregarFlor(a1, Posicion(3,1));
+
+
+  int i = 0;
+
+	nivel.pasarTurno();
+  cout << "lista de flores: " << nivel.floresN().size() << endl;
+  while(i < nivel.floresN().size()){
+    cout << "vida de la flor: " << nivel.floresN().at(i).vida << endl;
+    i++;
+  }
+  cout << "lista vampiros: " << nivel.vampirosN().size() << endl;
+  cout << "cantidad de soles: " << nivel.solesN() << endl << endl;
+  cout << "por donde anda mi vampiro: " << nivel.vampirosN().at(0).pos.fila << endl;
+
+  i = 0;
+  nivel.pasarTurno();
+  cout << "lista de flores: " << nivel.floresN().size() << endl;
+  while(i < nivel.floresN().size()){
+    cout << "vida de la flor: " << nivel.floresN().at(i).vida << endl;
+    i++;
+  }
+  cout << "lista vampiros: " << nivel.vampirosN().size() << endl;
+  cout << "cantidad de soles: " << nivel.solesN() << endl << endl;
+  cout << "por donde anda mi vampiro: " << nivel.vampirosN().at(0).pos.fila << endl;
+ 
+  i = 0;
+  nivel.pasarTurno();
+  cout << "lista de flores: " << nivel.floresN().size() << endl;
+  while(i < nivel.floresN().size()){
+    cout << "vida de la flor: " << nivel.floresN().at(i).vida << endl;
+    i++;
+  }
+  cout << "lista vampiros: " << nivel.vampirosN().size() << endl;
+  cout << "cantidad de soles: " << nivel.solesN() << endl << endl;
+  cout << "por donde anda mi vampiro: " << nivel.vampirosN().at(0).pos.fila << endl;
+  
+  i = 0;
+  nivel.pasarTurno();
+  cout << "lista de flores: " << nivel.floresN().size() << endl;
+  while(i < nivel.floresN().size()){
+    cout << "vida de la flor: " << nivel.floresN().at(i).vida << endl;
+    i++;
+  }
+  cout << "lista vampiros: " << nivel.vampirosN().size() << endl;
+  cout << "cantidad de soles: " << nivel.solesN() << endl << endl;
+  cout << "por donde anda mi vampiro: " << nivel.vampirosN().at(0).pos.fila << endl;
+
+  i = 0;
+  nivel.pasarTurno();
+  cout << "lista de flores: " << nivel.floresN().size() << endl;
+  while(i < nivel.floresN().size()){
+    cout << "vida de la flor: " << nivel.floresN().at(i).vida << endl;
+    i++;
+  }
+  cout << "lista vampiros: " << nivel.vampirosN().size() << endl;
+  cout << "cantidad de soles: " << nivel.solesN() << endl << endl;
+  cout << "por donde anda mi vampiro: " << nivel.vampirosN().at(0).pos.fila << endl;
+
+
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();
+  nivel.pasarTurno();  
+
+  cout << "lista de flores: " << nivel.floresN().size() << endl;
+
+  while(i < nivel.floresN().size()){
+    cout << "vida de la flor: " << nivel.floresN().at(i).vida << endl;
+    i++;
+  }
+  cout << "lista vampiros: " << nivel.vampirosN().size() << endl;
+  cout << "cantidad de soles: " << nivel.solesN() << endl << endl;
+  cout << "por donde anda mi vampiro: " << nivel.vampirosN().at(0).pos.fila << endl;*/
+
+/* TEST MOSTRAR
+
+  std::vector<Habilidad> h1;
+  h1.push_back(Atacar);
+
+  std::vector<Habilidad> h2;
+  h2.push_back(Generar);
+  h2.push_back(Explotar);
+
+  std::vector<Habilidad> h3;
+  h3.push_back(Atacar);
+  h3.push_back(Generar);
+  h3.push_back(Explotar);
+
+  Flor f1(10,10,h1);
+  Flor f2(10,10,h2);
+  Flor f3(10,10,h3);
+
+  //f1.Mostrar(cout);
+  //f2.Mostrar(cout);
+  //f3.Mostrar(cout);
+
+  Vampiro v1(Desviado,10,10);
+  Vampiro v2(Caminante,50,50);
+  Vampiro v3(Desviado,100,90);
+  Vampiro v4(Desviado,33,12);
+  Vampiro v5(Caminante,45,93);
+  Vampiro v6(Desviado,34,66);
+  Vampiro v7(Caminante,11,74);
+
+
+  //v1.Mostrar(cout);
+  //v2.Mostrar(cout);
+  //v3.Mostrar(cout);
+
+  VampiroEnEspera vamp1(v1,10,10);
+  VampiroEnEspera vamp2(v2,30,30);
+  VampiroEnEspera vamp3(v3,35,23);
+
+  std::vector<VampiroEnEspera> spawninglist;
+
+  spawninglist.push_back(vamp1);
+  spawninglist.push_back(vamp2);
+  spawninglist.push_back(vamp3);
+
+  Nivel n1(50,50,10,spawninglist);
+
+  //n1.Mostrar(cout);
+
+  std::vector<Flor> vectorFlor;
+  vectorFlor.push_back(f1);
+  vectorFlor.push_back(f2);
+  vectorFlor.push_back(f3);
+
+  std::vector<Vampiro> vectorVamp;
+  vectorVamp.push_back(v1);
+  vectorVamp.push_back(v2);
+  vectorVamp.push_back(v3);
+  vectorVamp.push_back(v4);
+
+  Juego j(vectorFlor,vectorVamp);
+
+  //j.Mostrar(cout);
+  */
+
+  /*  TEST DE CARGAR */
+  
+  Vampiro vamp1;
+  Flor f;
+  Nivel n;
+  Juego game;
+
+  ifstream is("cargarJuego");
+
+  if(is.is_open()){
+    game.Cargar(is);
+    is.close();
+  }
+
+  cout << "Cree juego" << endl;
+  cout << "Cantidad de flores del juego: " << game.floresJ().size() << endl;
+  cout << "Cantidad de vampiros del juego: " << game.vampirosJ().size() << endl;
+  cout << "cantidad de niveles del juego: " << game.nivelesJ().size() << endl;
+
+  /*cout << "ancho del nivel: " << n.anchoN() << endl;
+  cout << "alto del nivel: " << n.altoN() << endl;
+  cout << "turno del nivel: " << n.turnoN() << endl;
+  cout << "soles del nivel: " << n.solesN() << endl;
+  cout << "longitud lista flores: " << n.floresN().size() << endl;
+  cout << "longitud lista vampiros: " << n.vampirosN().size() << endl;
+  cout << "longitud lista de spawning: " << n.spawningN().size() << endl;
+  
+  cout << "Cree Flor" << endl;
+  cout << "vida de la flor: " << f.vidaF() << endl;
+  cout << "cuanto pega la flor: " << f.cuantoPegaF() << endl;
+  cout << "habilidades de la flor: ";
+
+  int i = 0;
+
+  while(i < f.habilidadesF().size()){
+    cout << f.habilidadesF().at(i) << " ";
+    i++;
+  }
+  cout << endl;
+
+  cout << "Cree vampiro" << endl;
+  cout << "vida del vampiro: " << vamp1.vidaV() << endl;
+  cout << "cuanto pega el vampiro: " << vamp1.cuantoPegaV() << endl;
+  cout << "clase del vampiro: " << vamp1.claseV() << endl;*/
+  
+  /* TEST DE agregarNivel 
+  Juego juego = Juego();
+  std::vector<VampiroEnEspera> vampiros = std::vector<VampiroEnEspera>();
+  ClaseVampiro cv = Caminante;
+  Vampiro vampiro = Vampiro(cv, 60, 12);
+  VampiroEnEspera vampiroEnEspera1 = VampiroEnEspera(vampiro, 1, 2);
+  VampiroEnEspera vampiroEnEspera2 = VampiroEnEspera(vampiro, 1, 2);
+  vampiros.push_back(vampiroEnEspera1);
+  Nivel nivel1 = Nivel(10, 10, 10, vampiros);
+  Nivel nivel2 = Nivel(20, 20, 20, vampiros);
+  Nivel nivel3 = Nivel(30, 30, 30, vampiros);
+  Nivel nivel4 = Nivel(40, 40, 40, vampiros);
+  juego.agregarNivel(nivel1, 0);
+  juego.agregarNivel(nivel2, 1);
+  juego.agregarNivel(nivel3, 2);
+  juego.agregarNivel(nivel4, 3);
+  
+  int i = 0;
+  while(i < juego.nivelesJ().size()){
+	  Nivel nivel = juego.nivelesJ().at(i);
+	  cout << "Mostrando flor..." << i << endl;
+	  nivel.Mostrar(cout);
+	  i++;
+  }
+  * */
+  
+  /* TEST estoSaleFacil 
+  Juego juego = Juego();
+  std::vector<VampiroEnEspera> vampiros = std::vector<VampiroEnEspera>();
+  ClaseVampiro cv = Caminante;
+  Vampiro vampiro = Vampiro(cv, 60, 12);
+  VampiroEnEspera vampiroEnEspera1 = VampiroEnEspera(vampiro, 1, 2);
+  VampiroEnEspera vampiroEnEspera2 = VampiroEnEspera(vampiro, 1, 2);
+  vampiros.push_back(vampiroEnEspera1);
+  Nivel nivel1 = Nivel(10, 10, 10, vampiros);
+  Nivel nivel2 = Nivel(20, 20, 20, vampiros);
+  Nivel nivel3 = Nivel(30, 30, 30, vampiros);
+  Nivel nivel4 = Nivel(40, 40, 40, vampiros);
+  juego.agregarNivel(nivel1, 0);
+  juego.agregarNivel(nivel4, 1);
+  juego.agregarNivel(nivel3, 2);
+  juego.agregarNivel(nivel2, 3);
+  
+  std::vector<Nivel> nivelesFaciles = juego.estosSaleFacil();
+  int j = 0;
+  while(j < nivelesFaciles.size()){
+	  nivelesFaciles.at(j).Mostrar(cout);
+	  j++;
+  }
+  */
+  
+  /* TEST altoCheat 
+  Juego juego = Juego();
+  std::vector<VampiroEnEspera> vampiros = std::vector<VampiroEnEspera>();
+  ClaseVampiro cv = Caminante;
+  Vampiro vampiro = Vampiro(cv, 60, 12);
+  VampiroEnEspera vampiroEnEspera1 = VampiroEnEspera(vampiro, 1, 2);
+  VampiroEnEspera vampiroEnEspera2 = VampiroEnEspera(vampiro, 1, 2);
+  vampiros.push_back(vampiroEnEspera1);
+  Nivel nivel1 = Nivel(10, 10, 10, vampiros);
+  Nivel nivel2 = Nivel(20, 20, 20, vampiros);
+  Nivel nivel3 = Nivel(30, 30, 30, vampiros);
+  Nivel nivel4 = Nivel(40, 40, 40, vampiros);
+  nivel3.pasarTurno();
+  juego.agregarNivel(nivel1, 0);
+  juego.agregarNivel(nivel2, 1);
+  juego.agregarNivel(nivel3, 2);
+  juego.agregarNivel(nivel4, 3);
+  
+  juego.altoCheat(2);
+  */
+   
+   /* TEST muyDeExactas 
+   
+   Juego juego = Juego();
+   cout << "Muy de exactas: " << juego.muyDeExactas() << endl;
+   */
+   
+   
+}
+

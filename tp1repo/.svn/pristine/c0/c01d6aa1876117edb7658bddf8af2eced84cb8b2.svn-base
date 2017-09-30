@@ -1,0 +1,54 @@
+#pragma once
+#include <vector>
+
+#include <iostream>
+
+#include "Flor.h"
+#include "Vampiro.h"
+#include "Nivel.h"
+#include "Types.h"
+
+class Juego
+{
+private:
+
+	std::vector<Flor> _flores;
+	std::vector<Vampiro> _vampiros;
+	std::vector<Nivel> _niveles;
+	int _nivelActual;
+	
+	bool turnoDeNivelEnRango(Nivel n);
+	bool floresDeNivelEnRango(Nivel n);
+	bool vampirosDeNivelEnRango(Nivel n);
+	void quitarRepetidosFlores(std::vector<Flor>& flores);
+	bool mismasHabilidadesFlor(Flor f1,Flor f2);
+	bool habilidadPerteneceAFlor(int h, Flor f2);
+	void quitarRepetidosVampiros(std::vector<Vampiro>& vamp);
+	bool vampirosIguales(Vampiro v1, Vampiro v2);
+	bool igualesVampirosEnEspera(VampiroEnEspera v1, VampiroEnEspera v2);
+	bool esNivelFacil(Nivel candidato, std::vector<Nivel> niveles);
+	std::vector<int> darNivelesGanados();
+	void reducirVidaALaMitad(VampiroEnJuego& vampiro);
+	void chitearNivel(Nivel& nivelTrucado);
+	bool estadoFuturo(Nivel& ni, Nivel& nf);
+
+public:
+
+	Juego();
+	Juego(std::vector<Flor>& flores, std::vector<Vampiro>& vamps);
+	int nivelActual();
+	void pasarNivel();
+	std::vector<Flor>& floresJ();
+	std::vector<Vampiro>& vampirosJ();
+	std::vector<Nivel>& nivelesJ();
+	void agregarNivel(Nivel& n, int i);
+	void jugarNivel(Nivel& n, int i);
+	std::vector<Nivel> estosSaleFacil();
+	void altoCheat(int n);
+	bool muyDeExactas();
+
+	void Mostrar(std::ostream& os);
+	void Guardar(std::ostream& os);
+	void Cargar(std::istream& is);
+
+};

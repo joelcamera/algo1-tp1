@@ -1,0 +1,156 @@
+\documentclass[a4paper]{article}
+
+\usepackage{soul}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+
+\input{page.layout}
+\usepackage{underscore}
+\usepackage{caratula}
+\usepackage{url}
+
+
+\begin{document}
+
+\thispagestyle{empty}
+\materia{Algoritmos y Estructuras de Datos I}
+\submateria{Primer Cuatrimestre de 2015}
+\grupo{Grupo 18: Perl Jam}
+\titulo{RTPI}
+\subtitulo{}
+
+\integrante{Joel Esteban Camera}{257/14}{joel.e.camera@gmail.com}
+\integrante{Isakova, Olga}{779/14}{fallenapart@mail.ru}
+\integrante{Martinez, Marcelo}{501/82}{pcpower99@hotmail.com}
+\integrante{Valls, Marcelo}{108/14}{cmarcelovalls@hotmail.com}
+
+\maketitle
+\newpage
+
+\lstset{tabsize=2,numbers=left,numberstyle=\tiny,showstringspaces=false}
+\lstset{breaklines=true, 
+		postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow\space}}
+}
+
+\begin{center}
+\textsc{\Large \bfseries Types.h}
+\end{center}
+\lstinputlisting[language=C++]{Types.h}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Flor.h}
+\end{center}
+\lstinputlisting[language=C++]{Flor.h}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Flor.cpp}
+\end{center}
+\lstinputlisting[language=C++]{Flor.cpp}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Vampiro.h}
+\end{center}
+\lstinputlisting[language=C++]{Vampiro.h}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Vampiro.cpp}
+\end{center}
+\lstinputlisting[language=C++]{Vampiro.cpp}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Nivel.h}
+\end{center}
+\lstinputlisting[language=C++]{Nivel.h}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Nivel.cpp}
+\end{center}
+\lstinputlisting[language=C++]{Nivel.cpp}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Juego.h}
+\end{center}
+\lstinputlisting[language=C++]{Juego.h}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Juego.cpp}
+\end{center}
+\lstinputlisting[language=C++]{Juego.cpp}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries Main.cpp}
+\end{center}
+\lstinputlisting[language=C++]{main.cpp}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries TestAltoCheat1}
+\end{center}
+\lstinputlisting[language=C++]{TestAltoCheat1}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries TestAltoCheat2}
+\end{center}
+\lstinputlisting[language=C++]{TestAltoCheat2}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries TestAltoCheat3}
+\end{center}
+\lstinputlisting[language=C++]{TestAltoCheat3}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries TestEstosSaleFacil2}
+\end{center}
+\lstinputlisting[language=C++]{TestEstosSaleFacil2}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries TestEstosSaleFacil3}
+\end{center}
+\lstinputlisting[language=C++]{TestEstosSaleFacil3}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries TestEstosSaleFacil4}
+\end{center}
+\lstinputlisting[language=C++]{TestEstosSaleFacil4}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries TestMuyDeExactas1}
+\end{center}
+\lstinputlisting[language=C++]{TestMuyDeExactas1}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries TestMuyDeExactas2}
+\end{center}
+\lstinputlisting[language=C++]{TestMuyDeExactas2}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries TestMuyDeExactas3}
+\end{center}
+\lstinputlisting[language=C++]{TestMuyDeExactas3}
+\newpage
+
+\begin{center}
+\textsc{\Large \bfseries TestMuyDeExactas4}
+\end{center}
+\lstinputlisting[language=C++]{TestMuyDeExactas4}
+\newpage
+
+\end{document}

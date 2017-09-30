@@ -1,0 +1,19 @@
+\begin{tipo}{Juego}
+	\observador{flores}{j: Juego}{[Flor]}
+	\observador{vampiros}{j: Juego}{[Vampiro]}
+	\observador{niveles}{j: Juego}{[Nivel]}
+	\invariante[floresDistintas]{(\forall i, k \selec [0..\longitud{flores(j)}), i \neq k) \neg floresIguales(flores(j)_i, flores(j)_k)}
+	\invariante[vampirosDistintos]{sinRepetidos(vampiros(j))}
+\invariante[nivelesConFloresValidas]{
+	\\
+	(\forall\ \selector{nivel}{niveles(j)})\
+		((\forall\ \selector{flor}{flores(nivel)})\ florEnLista(flor, flores(j)))
+}
+
+\invariante[nivelesConVampirosValidos]{
+	(\forall\ \selector{nivel}{niveles(j)})\
+		((\forall\ \selector{vampiro}{vampiros(nivel)})\ vampiro \in vampiros(j))
+}
+
+\end{tipo}
+

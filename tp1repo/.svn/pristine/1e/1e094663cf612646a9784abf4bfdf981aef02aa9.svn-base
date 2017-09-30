@@ -1,0 +1,113 @@
+#include "Juego.h"
+#include "Vampiro.h"
+#include <iostream>
+
+using namespace std;
+
+int main(){
+
+  /*cout << " Trabajo practico Flores vs Vampiros" << endl;
+  
+  vector<Habilidad> hab;
+  hab.push_back(Atacar);
+  
+  vector<Habilidad> hab2;
+  hab2.push_back(Atacar);
+  hab2.push_back(Generar);
+  
+  vector<Habilidad> hab3;
+  hab3.push_back(Explotar);
+  hab3.push_back(Generar);
+  
+  Flor f(25,0,hab3);
+  
+  cout << f.vidaF() << ' ' << f.cuantoPegaF() << endl;
+  
+  Vampiro v(Caminante,50,50);
+  
+  cout << v.vidaV() << ' ' << v.cuantoPegaV() << endl;
+  
+  vector<VampiroEnEspera> spawn;
+  spawn.push_back(VampiroEnEspera(v,2,2));
+  
+  Nivel n(5,5,100,spawn);
+  
+  cout << n.solesN() << endl;
+  
+  n.agregarFlor(f, Posicion(2,2));
+  
+  cout << n.solesN() << endl;
+  
+  n.pasarTurno();
+  
+  cout << n.solesN() << endl;
+  
+  cout << n.terminado() << ' ' << n.obsesivoCompulsivo() << endl;
+  
+  
+  vector<Flor> fs;
+  fs.push_back(f);
+  
+  vector<Vampiro> vs;
+  vs.push_back(v);
+  
+  Juego j(fs,vs);
+  
+  j.agregarNivel(n);
+  
+  cout << j.muyDeExactas() << endl;
+*/
+	
+/*	 TEST CREACION DE NIVEL + GUARDAR/MOSTRAR -NO BORRAR- 
+	
+	cout << "Comenzando ejecucion..." << endl;
+	Vida vida = 100;
+	ClaseVampiro cv = Caminante;
+	VampiroEnEspera v1 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 1);
+	VampiroEnEspera v2 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 2);
+	VampiroEnEspera v3 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 3);
+	VampiroEnEspera v4 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 4);
+	VampiroEnEspera v5 = VampiroEnEspera(Vampiro(cv, vida, 10), 1, 5);
+	VampiroEnEspera v6 = VampiroEnEspera(Vampiro(cv, vida, 10), 3, 5);
+	VampiroEnEspera v7 = VampiroEnEspera(Vampiro(cv, vida, 10), 2, 5);
+	std::vector<VampiroEnEspera> spawning = std::vector<VampiroEnEspera>();
+	spawning.push_back(v2);
+	spawning.push_back(v3);
+	spawning.push_back(v1);
+	spawning.push_back(v5);
+	spawning.push_back(v4);
+	spawning.push_back(v6);
+	spawning.push_back(v7);
+	cout << "Todo creado, se crea nivel" << endl;
+	Nivel nivel = Nivel(10, 10, 50, spawning);
+
+  ofstream osn;
+
+  nivel.Guardar(osn);
+  nivel.Mostrar(osn);
+  
+
+  */
+
+  /* TEST DE GUARDAR 
+  std::vector<Habilidad> v;
+  v.push_back(Generar);
+  v.push_back(Atacar);
+  v.push_back(Explotar);
+
+  Flor f(10,10,v);
+
+  ofstream osf("f.txt");
+
+  f.Guardar(osf);
+  //f.Mostrar(osf);
+  osf.close();
+
+  
+  Vampiro vamp(Desviado,20,20);
+
+  ofstream osV("v.txt");
+
+  vamp.Guardar(osV);
+  osV.close();*/
+}

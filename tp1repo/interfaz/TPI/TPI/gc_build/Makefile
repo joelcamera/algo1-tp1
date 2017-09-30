@@ -1,0 +1,19 @@
+#OBJS specifies which files to compile as part of the project
+OBJS = ../src/tp_src/Juego.cpp ../src/tp_src/Nivel.cpp ../src/tp_src/Flor.cpp ../src/tp_src/Vampiro.cpp ../src/cg_src/FunctionPtr.cpp ../src/cg_src/CreateSpawnListMenu.cpp ../src/cg_src/NivelMenu.cpp ../src/cg_src/main.cpp ../src/cg_src/VampMenu.cpp ../src/cg_src/PlantMenu.cpp ../src/cg_src/MainMenu.cpp ../src/cg_src/CrearNivelesMenu.cpp ../src/cg_src/ActionPacked.cpp ../src/cg_src/App.cpp
+
+#CC specifies which compiler we're using
+CC = g++ -std=c++11
+
+#COMPILER_FLAGS specifies the additional compilation options we're using
+# -w suppresses all warnings
+COMPILER_FLAGS = -w -I/usr/local/include/SDL2
+
+#LINKER_FLAGS specifies the libraries we're linking against
+LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
+
+#OBJ_NAME specifies the name of our exectuable
+OBJ_NAME = tpi
+
+#This is the target that compiles our executableSDL_ttf
+all : $(OBJS)
+	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)

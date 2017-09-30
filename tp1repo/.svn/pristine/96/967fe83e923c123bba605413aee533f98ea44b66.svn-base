@@ -1,0 +1,94 @@
+#include "Nivel.h"
+#include <cassert>
+
+Nivel::Nivel()
+{
+}
+
+Nivel::Nivel(int ancho, int alto, int soles, std::vector<VampiroEnEspera>& spawninglist)
+{
+	//vectores _flores y _vampiros no se agregan aca, empiezan vacias
+
+	_ancho = ancho;
+	_alto = alto;
+	_turno = 0;
+	_soles = soles;
+
+	inicializarVector(_spawning,spawninglist);
+
+}
+
+int Nivel::anchoN()
+{
+	return _ancho;
+}
+
+int Nivel::altoN()
+{
+	return _alto;
+}
+
+int Nivel::turnoN()
+{
+	return _turno;
+}
+
+int Nivel::solesN()
+{
+	return _soles;
+}
+
+std::vector<FlorEnJuego>& Nivel::floresN()
+{
+	return _flores;
+}
+
+std::vector<VampiroEnJuego>& Nivel::vampirosN()
+{
+	return _vampiros;
+}
+
+std::vector<VampiroEnEspera>& Nivel::spawningN()
+{
+	return _spawning;
+}
+
+void Nivel::agregarFlor(Flor f, Posicion p)
+{
+}
+
+void Nivel::pasarTurno()
+{
+}
+
+bool Nivel::terminado()
+{
+}
+
+bool Nivel::obsesivoCompulsivo()
+{
+}
+
+void Nivel::Mostrar(std::ostream& os)
+{
+}
+
+void Nivel::Guardar(std::ostream& os)
+{
+}
+
+void Nivel::Cargar(std::istream& is)
+{
+}
+
+void Nivel::inicializarVector(std::vector<VampiroEnEspera>& _spawning,std::vector<VampiroEnEspera>& spawninglist)
+{
+	int i = 0;
+
+	while(i < spawninglist.size())
+	{
+		_spawning.push_back(spawninglist.at(i));
+
+		i++;
+	}
+}

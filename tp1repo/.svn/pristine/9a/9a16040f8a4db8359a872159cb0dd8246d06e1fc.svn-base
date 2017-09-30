@@ -1,0 +1,581 @@
+#include "Juego.h"
+
+using namespace std;
+
+Juego::Juego()
+{
+	this->_niveles = std::vector<Nivel>();
+	this->_flores = std::vector<Flor>();
+	this->_vampiros = std::vector<Vampiro>();
+	this->_nivelActual = 0;
+}
+
+Juego::Juego(std::vector<Flor>& flores, std::vector<Vampiro>& vamps)
+{
+	quitarRepetidosFlores(flores);
+	quitarRepetidosVampiros(vamps);
+
+	this->_flores = flores;
+	this->_vampiros = vamps;
+	this->_niveles = std::vector<Nivel>();
+	this->_nivelActual = 0;
+}
+
+int Juego::nivelActual()
+{
+	return this->_nivelActual;
+}
+
+void Juego::pasarNivel()
+{
+	this->_nivelActual = this->_nivelActual++;
+}
+
+std::vector<Flor>& Juego::floresJ()
+{
+	return this->_flores;
+}
+
+std::vector<Vampiro>& Juego::vampirosJ()
+{
+	return this->_vampiros;
+}
+
+std::vector<Nivel>& Juego::nivelesJ()
+{
+	return this->_niveles;
+}
+
+void Juego::agregarNivel(Nivel& n, int i)
+{
+	// si no cumple los requiere no agrega el nivel.
+	if(turnoDeNivelEnRango(n) && floresDeNivelEnRango(n) && vampirosDeNivelEnRango(n)){
+		std::vector<Nivel> niveles = std::vector<Nivel>();
+		int j = 0;
+		if(i == this->_niveles.size()){
+			while(j < this->_niveles.size()){
+				niveles.push_back(this->_niveles.at(j));
+				j++;
+			}
+			niveles.push_back(n);
+		}else{
+			while(j < this->_niveles.size()){
+				if(j != i){
+					niveles.push_back(this->_niveles.at(j));
+				}else{
+					niveles.push_back(n);
+				}
+				j++;
+			}
+		}
+		this->_niveles = niveles;
+	}else{
+		std::cout << "No cumple" << endl;
+	}
+}
+
+std::vector<Nivel> Juego::estosSaleFacil()
+{
+	vector<Nivel> nivelesFaciles = vector<Nivel>();
+	int i = 0;
+	while(i < this->_niveles.size()){
+		if(esNivelFacil(this->_niveles.at(i), this->_niveles)){
+			nivelesFaciles.push_back(this->_niveles.at(i));
+		}
+		i++;
+	}
+	return nivelesFaciles;
+}
+
+void Juego::altoCheat(int n)
+{
+	Nivel nivelTrucado = this->_niveles.at(n);	
+	nivelTrucado.Mostrar(std::cout);
+	chitearNivel(nivelTrucado);	
+	std::vector<Nivel> nuevaListaNiveles = std::vector<Nivel>();
+	int i = 0;
+	while(i < this->_niveles.size()){
+		if( i == n ){
+			nuevaListaNiveles.push_back(nivelTrucado);
+		}else{
+			nuevaListaNiveles.push_back(this->_niveles.at(i));
+		}
+		i++;
+	}
+	this->_niveles = nuevaListaNiveles;
+}
+
+void Juego::chitearNivel(Nivel& nivelTrucado){
+	std::vector<VampiroEnJuego> vampiros = std::vector<VampiroEnJuego>();
+	int i = 0;
+	std::cout << "Holis" << endl;
+	while(i < nivelTrucado.vampirosN().size()){
+		//VampiroEnJuego vampiro = nivelTrucado.vampirosN().at(i);
+		reducirVidaALaMitad(nivelTrucado.vampirosN().at(i));
+		std::cout << "Vida = " << nivelTrucado.vampirosN().at(i).vida << endl;
+		//vampiros.push_back(vampiro);
+		i++;
+	}
+	//nivelTrucado = Nivel(nivelTrucado.anchoN(), nivelTrucado.altoN(), nivelTrucado.solesN(), vampiros);
+	//nivelTrucado.Mostrar(std::cout);
+}
+
+void Juego::reducirVidaALaMitad(VampiroEnJuego& vampiro){
+	std::cout << "Vida antes = " << vampiro.vida << endl;
+	vampiro.vida = vampiro.vida/2;
+	std::cout << "Vida despues = " << vampiro.vida << endl;
+}
+
+bool Juego::muyDeExactas()
+{
+	std::vector<int> nivelesGanados = darNivelesGanados();
+	/*
+	 * Test
+	 * 
+	 
+	std::vector<int> nivelesGanados = std::vector<int>();
+	nivelesGanados.push_back(1);
+	nivelesGanados.push_back(2);
+	nivelesGanados.push_back(3);
+	nivelesGanados.push_back(5);
+	nivelesGanados.push_back(8);
+	
+	/* Fin test */
+	
+	if(nivelesGanados.size() >= 1 && nivelesGanados.at(0) != 1){
+		return false;
+	}
+	if(nivelesGanados.size() >= 2 && nivelesGanados.at(1) != 2){
+		return false;
+	}
+	int i = 2;
+	
+	while(i < nivelesGanados.size()){
+		if(nivelesGanados.at(i) != nivelesGanados.at(i-1) + nivelesGanados.at(i-2)){
+			return false;			
+		}
+		i++;
+	}
+	return true;
+}
+
+void Juego::Mostrar(std::ostream& os)
+{
+	int i = 0;
+	os << "JUEGO:" << endl;
+	
+	//Muestro vector de flores del juego
+	os << endl << "** Flores del JUEGO **" << endl;
+
+	while(i < this->_flores.size()){
+
+		os << endl;
+
+		this->_flores.at(i).Mostrar(os);
+
+		i++;
+	}
+
+	i = 0;
+
+	//Muestro el vector de vampiros del Juego
+	os << endl << "** Vampiros del JUEGO **" << endl;
+
+	while(i < this->_vampiros.size()){
+
+		os << endl;
+
+		this->_vampiros.at(i).Mostrar(os);
+
+		i++;
+	}
+
+	i = 0;
+
+	//Muestro el vector de niveles del Juego
+	os << endl << "** Niveles del JUEGO **" << endl;
+
+	while(i < this->_niveles.size()){
+
+		os << endl;
+
+		this->_niveles.at(i).Mostrar(os);
+
+		i++;
+	}
+
+	os << endl << "Nivel actual del Juego: " << this->_nivelActual << endl;
+}
+
+void Juego::Guardar(std::ostream& os){
+	os << "{ J";
+	
+	if(this->_flores.size() > 0){
+		os << " [ ";
+		int i = 0;
+		while(i < this->_flores.size()){
+			Flor flor = this->_flores.at(i);
+			flor.Guardar(os);	
+			os << " ";	
+			i++;
+		}
+		os << " ] ";
+	}
+	
+	if(this->_vampiros.size() > 0){
+		os << " [ ";
+		int i = 0;
+		while(i < this->_vampiros.size()){
+			Vampiro vampiro = this->_vampiros.at(i);
+			vampiro.Guardar(os);
+			os << " ";
+			i++;
+		}		
+		os << " ] ";
+	}
+	if(this->_niveles.size() > 0){
+		os << " [ ";
+		int i = 0;
+		while(i < this->_niveles.size()){
+			Nivel nivel = this->_niveles.at(i);
+			nivel.Guardar(os);
+			os << " ";
+			i++;
+		}		
+		os << " ] ";
+	}
+	os << " } ";
+}
+
+void Juego::Cargar(std::istream& is)
+{
+	string leer;
+	int i = 0,cuantoPegaVamp,anchoNivel,altoNivel,turnoNivel,solesNivel,posX,posY;
+	Vida vidaDelVampiro,vidaDeLaFlorNivel;
+	bool finDeLista = false;
+	bool finDeHabilidades = false;
+	bool finFloresNivel = false;
+	bool finVampirosNivel = false;
+	vector<Habilidad> hs;
+	vector<FlorEnJuego> vectorFlorNivel;
+	ClaseVampiro claseVamp;
+
+	getline(is,leer,'J');
+	getline(is,leer,' ');
+	getline(is,leer,' '); // primera lista, "["
+	getline(is,leer,' '); // "{"
+
+	if(leer == "]") // si la lista esta vacia que continue con la otra
+		finDeLista = true;
+
+	// carga de lista de flores
+	while(finDeLista == false){
+
+		getline(is,leer,' '); // "F"
+		getline(is,leer,' '); // vida
+		getline(is,leer,' '); // cuanto pega
+		getline(is,leer,' '); // "["
+
+		while(finDeHabilidades == false){
+
+			getline(is,leer,' ');
+
+			if(leer == "Atacar"){
+				hs.push_back(Atacar);
+			} else if(leer == "Explotar"){
+				hs.push_back(Explotar);
+			} else if(leer == "Generar"){
+				hs.push_back(Generar);
+			} else if(leer == "]"){
+				finDeHabilidades = true;
+			}
+	
+		} //fin de while habilidades
+
+		finDeHabilidades = false;
+
+		//con las habilidades creo la flor y la cargo en la lista de flores
+		Flor flor(1,1,hs);
+		this->_flores.push_back(flor);
+
+		// vacio el vector de habilidades
+		i = 0;
+
+		while(i < hs.size()){
+			hs.pop_back();
+			i++;
+		}
+
+
+		getline(is,leer,' '); // "}"
+		getline(is,leer,' '); // "{" || "]"
+
+		if(leer == "]")
+			finDeLista = true;
+
+	} // fin de la carga de la lista de flores
+
+	finDeLista = false;
+	getline(is,leer,' '); // "[" empieza la lista de vampiros
+	getline(is,leer,' '); // "{"
+
+	if(leer == "]") // si la lista esta vacia que continue con la otra
+		finDeLista = true;
+
+	// carga de lista de vampiros
+	while(finDeLista == false){
+
+		getline(is,leer,' '); // "V"
+		getline(is,leer,' '); // clase del vampiro
+
+		if(leer == "Caminante"){
+			claseVamp = Caminante;
+		} else if(leer == "Desviado"){
+			claseVamp = Desviado;
+		}
+
+		getline(is,leer,' '); // vida del vampiro
+		vidaDelVampiro = atoi(leer.c_str());
+
+		getline(is,leer,' '); // cuanto pega del vampiro
+		cuantoPegaVamp = atoi(leer.c_str());
+
+		Vampiro vamp(claseVamp,vidaDelVampiro,cuantoPegaVamp);
+		this->_vampiros.push_back(vamp);
+
+		getline(is,leer,' '); // "}"
+		getline(is,leer,' '); // "{" || "]"
+
+		if(leer == "]")
+			finDeLista = true;
+
+	} // fin de la carga de la lista de vampiros
+
+	finDeLista = false;
+	getline(is,leer,' '); // "[" empieza la lista de niveles
+	getline(is,leer,' '); // "{"
+
+	if(leer == "]") // si la lista esta vacia termina con la lista vacia
+		finDeLista = true;
+
+	// carga de lista de niveles
+	while(finDeLista == false){
+
+		getline(is,leer,' '); // "N"
+
+		getline(is,leer,' '); // ancho
+		anchoNivel = atoi(leer.c_str());
+
+		getline(is,leer,' '); // alto
+		altoNivel = atoi(leer.c_str());
+
+		getline(is,leer,' '); // turno
+		turnoNivel = atoi(leer.c_str());
+
+		getline(is,leer,' '); // soles
+		solesNivel = atoi(leer.c_str());
+
+		getline(is,leer,' '); // "[" comienza la lista de flores del nivel
+
+		// cargo la lista de flores de nivel		
+		while(finFloresNivel == false){
+
+			getline(is,leer,' '); // "("
+
+				if (leer == "]") // si esta vacia la lista no carga nada
+					finFloresNivel = true;
+
+			getline(is,leer,' '); // "{"
+			getline(is,leer,' '); // "F"
+			getline(is,leer,' '); // vida de la flor
+			getline(is,leer,' '); // cuanto pega la flor
+			getline(is,leer,' '); // "[" comienzo del vector habilidades
+
+			while(finDeHabilidades == false){
+
+				getline(is,leer,' ');
+
+				if(leer == "Atacar"){
+					hs.push_back(Atacar);
+				} else if(leer == "Explotar"){
+					hs.push_back(Explotar);
+				} else if(leer == "Generar"){
+					hs.push_back(Generar);
+				} else if(leer == "]"){
+					finDeHabilidades = true;
+				}
+	
+			} //fin de while habilidades
+
+			finDeHabilidades = false;
+
+			//con las habilidades creo la flor
+			Flor florNivel(1,1,hs);
+
+			// vacio el vector de habilidades
+			i = 0;
+			while(i < hs.size()){
+				hs.pop_back();
+				i++;
+			}
+
+			getline(is,leer,' '); // "}"
+			getline(is,leer,' '); // "("
+			getline(is,leer,' '); // posX de la flor
+			posX = atoi(leer.c_str());
+			getline(is,leer,' '); // posY de la flor
+			posY = atoi(leer.c_str());
+
+			Posicion pos(posX,posY);
+
+			getline(is,leer,' '); // ")"
+			getline(is,leer,' '); // "vida de la flor en juego"
+			vidaDeLaFlorNivel = atoi(leer.c_str());
+
+			//cargo la flor en el vector
+			FlorEnJuego fEnJuego(florNivel,pos,vidaDeLaFlorNivel);
+			vectorFlorNivel.push_back(fEnJuego);
+
+			getline(is,leer,' '); // ")"
+			getline(is,leer,' '); // "(" || "]"
+
+			if(leer == "]")
+				finFloresNivel = true;
+
+		} // fin de la carga de flores del nivel
+
+		getline(is,leer,' '); // "[" comienza la lista de vampiros del nivel
+
+		finDeLista = true;
+
+	}// fin de la carga de niveles
+
+	cout << "ver en donde estoy: " << leer << endl << endl;
+
+}
+
+bool Juego::turnoDeNivelEnRango(Nivel n){
+	return n.turnoN() == 0;	
+}
+
+bool Juego::floresDeNivelEnRango(Nivel n){
+	return n.floresN().size() == 0;
+}
+
+bool Juego::vampirosDeNivelEnRango(Nivel n){
+	return n.vampirosN().size() == 0;
+}
+
+void Juego::quitarRepetidosFlores(std::vector<Flor>& flores){
+	int i = flores.size() - 1;
+	int j;
+	Flor f1;
+	Flor f2;
+
+	while (0 < i){
+		f1 = flores.at(i);
+		j = i - 1;
+
+		while(0 <= j){
+			f2 = flores.at(j);
+			if(mismasHabilidadesFlor(f1,f2)){
+				flores.pop_back();
+				break;
+			}
+			j--;
+		}
+		i--;
+	}
+}
+
+bool Juego::mismasHabilidadesFlor(Flor f1, Flor f2){
+  int res = true;
+
+  if(f1.habilidadesF().size() != f2.habilidadesF().size()){
+    return false;
+  } else {
+    int i = 0;
+
+    while(i < f1.habilidadesF().size()){
+
+      if(!habilidadPerteneceAFlor(f1.habilidadesF().at(i),f2))
+        res = false;
+      i++;
+    }
+  return res;
+  }
+}
+
+bool Juego::habilidadPerteneceAFlor(int h, Flor f2){
+  bool res = false;
+  int i = 0;
+
+  while(i < f2.habilidadesF().size()){
+    if(f2.habilidadesF().at(i) == h)
+      res = true;
+    i++;
+  }
+
+  return res;
+}
+
+void Juego::quitarRepetidosVampiros(std::vector<Vampiro>& vamp){
+	Vampiro v1;
+	Vampiro v2;
+	int i = vamp.size() - 1;
+	int j;
+
+	while(0 < i){
+		v1 = vamp.at(i);
+		j = i - 1;
+
+		while(0 <= j){
+			v2 = vamp.at(j);
+
+			if(vampirosIguales(v1,v2)){
+				vamp.pop_back();
+				break;
+			}
+
+			j--;
+		}
+
+		i--;
+	}
+}
+
+bool Juego::vampirosIguales(Vampiro v1, Vampiro v2){
+	if(v1.vidaV() == v2.vidaV() && v1.claseV() == v2.claseV() && v1.cuantoPegaV() == v2.cuantoPegaV())
+		return true;
+	return false;
+}
+
+bool Juego::esNivelFacil(Nivel candidato, vector<Nivel> niveles){
+	/* Si en la lista niveles hay algun nivel con 
+	 * mas soles o con mismos soles pero mas flores entonces ese nivel
+	 * es mas facil que el candidato, luego candidato no es un nivel facil. 
+	 * */
+	bool esFacil = true;
+	int i = 0;
+	while(i < niveles.size() && esFacil){
+		Nivel comparable = niveles.at(i);
+		if(comparable.solesN() > candidato.solesN() || (comparable.solesN() == candidato.solesN() && comparable.floresN().size() > candidato.floresN().size())){
+			esFacil = false;
+		}
+		i++;
+	}
+	return esFacil;
+}
+
+std::vector<int> Juego::darNivelesGanados(){
+	std::vector<int> nivelesGanados = std::vector<int>();
+	int i = 0;
+	while(i < this->_niveles.size()){
+		Nivel nivel = this->_niveles.at(i);
+		if(nivel.ganado()){
+			nivelesGanados.push_back(i+1);
+		}
+		i++;
+	}
+	return nivelesGanados;
+}

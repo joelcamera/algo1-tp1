@@ -1,0 +1,128 @@
+#include "Juego.h"
+
+Juego::Juego()
+{
+}
+
+Juego::Juego(std::vector<Flor>& flores, std::vector<Vampiro>& vamps)
+{
+}
+
+int Juego::nivelActual()
+{
+	return this->_nivelActual;
+}
+
+void Juego::pasarNivel()
+{
+	this->_nivelActual = this->_nivelActual++;
+}
+
+std::vector<Flor>& Juego::floresJ()
+{
+	return this->_flores;
+}
+
+std::vector<Vampiro>& Juego::vampirosJ()
+{
+	return this->_vampiros;
+}
+
+std::vector<Nivel>& Juego::nivelesJ()
+{
+	return this->_niveles;
+}
+
+void Juego::agregarNivel(Nivel& n)
+{
+}
+
+std::vector<Nivel> Juego::estosSaleFacil()
+{
+}
+
+void Juego::altoCheat(int n)
+{
+}
+
+bool Juego::muyDeExactas()
+{
+
+}
+
+void Juego::Mostrar(std::ostream& os)
+{
+	os << "Info del juego: " << endl;
+	os << "Niveles: " << this->_niveles.size() << endl;
+	os << "Nivel actual: " << this->_nivelActual << endl;
+	os << "---------------" << endl;
+	os << "Vampiros: " << endl;
+	int i = 0;
+	while(i < this->_vampiros.size()){
+		Vampiro vamp = this->_vampiros.at(i);
+		os << "Vampiro " << i+1 << ": " << "Vida: " << vamp.vidaV() << " Cuanto pega: " << vamp.cuantoPegaV() << " Clase: " << vamp.claseV() << endl;
+		i++;
+	}
+	os << "---------------" << endl;
+	os << "Flores: " << endl;
+	i = 0;
+	while(i < this->_flores.size()){
+		Flor flor = this->_flores.at(i);
+		os << "Flor " << i+1 << ": " << "Habilidades: [";
+		int j = 0;
+		while(j < flor.habilidadesF().size()){
+			if(j < flor.habilidadesF().size() - 1){
+				os << flor.habilidadesF().at(j) << ", ";
+			}else{
+				os << flor.habilidadesF().at(j);
+			}
+			j++;
+		}
+		os << "]" << endl;
+		i++;
+	}
+}
+
+void Juego::Guardar(std::ostream& os){
+	os << "{ J";
+	
+	if(this->_flores.size() > 0){
+		os << " [ ";
+		int i = 0;
+		while(i < this->_flores.size()){
+			Flor flor = this->_flores.at(i);
+			flor.Guardar(os);	
+			os << " ";	
+			i++;
+		}
+		os << " ] ";
+	}
+	
+	if(this->_vampiros.size() > 0){
+		os << " [ ";
+		int i = 0;
+		while(i < this->_vampiros.size()){
+			Vampiro vampiro = this->_vampiros.at(i);
+			vampiro.Guardar(os);
+			os << " ";
+			i++;
+		}		
+		os << " ] ";
+	}
+	if(this->_niveles.size() > 0){
+		os << " [ ";
+		int i = 0;
+		while(i < this->_niveles.size()){
+			Nivel nivel = this->_niveles.at(i);
+			nivel.Guardar(os);
+			os << " ";
+			i++;
+		}		
+		os << " ] ";
+	}
+	os << " } ";
+}
+
+void Juego::Cargar(std::iostream& is)
+{
+	}

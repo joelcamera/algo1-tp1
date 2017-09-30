@@ -1,0 +1,126 @@
+#include "Vampiro.h"
+#include <cassert>
+
+using namespace std;
+
+Vampiro::Vampiro()
+{
+}
+
+Vampiro::Vampiro(ClaseVampiro cv, Vida v, int cP)
+{
+	// si no esta en rango, pone el valor mas cercano dentro del rango 
+	// (v<0 --> v = 1 || v>100 --> v == 100) y (cP<=0 --> 1)
+	if(!vidaEnRango(v))
+		ponerVidaEnRango(v);
+
+	if(!cuantoPegaEnRango(cP))
+		ponerCuantoPegaEnRango(cP);
+
+	this->_vida = v;
+	this->_cuantoPega = cP;
+	this->_clase = cv;
+}
+
+Vida Vampiro::vidaV()
+{
+	return this->_vida;
+}
+
+ClaseVampiro Vampiro::claseV()
+{
+	return this->_clase;
+}
+
+int Vampiro::cuantoPegaV()
+{
+	return this->_cuantoPega;
+}
+
+void Vampiro::Mostrar(std::ostream& os)
+{
+	os << "INFO. DEL VAMPIRO:" << endl;
+	os << "Vida del VAMPIRO: " << this->_vida << endl;
+	os << "Cuanto Pega el VAMPIRO: " << this->_cuantoPega << endl;
+	os << "Clase del Vampiro: ";
+
+	if(this->_clase == Caminante){
+		os << "Caminante" << endl;
+	} else {
+		os << "Desviado" << endl;
+	}
+}
+
+void Vampiro::Guardar(std::ostream& os)
+{
+	os << "{ V ";
+	
+	if(_clase == 0){
+		os << "Caminante ";
+	} else {
+		os << "Desviado ";
+	}
+
+	std::string strVida = std::to_string(_vida);
+	os << strVida << " ";
+	
+	std::string strCuantoPega = std::to_string(_cuantoPega);
+	os << strCuantoPega << " }";
+}
+
+void Vampiro::Cargar(std::istream& is)
+{
+	string leer,x;
+	int num = 0;
+
+	while(is >> leer){
+
+		getline(is,x,'V');
+		getline(is,x,' ');
+		getline(is,x,' '); // aca veo la clase del vampiro
+
+		if(x == "Desviado"){
+			this->_clase = Desviado;
+		} else {
+			this->_clase = Caminante;
+		}
+
+		getline(is,x,' '); // aca veo la vida
+
+		this->_vida = atoi(x.c_str());
+
+		if(!vidaEnRango(this->_vida))
+			ponerVidaEnRango(this->_vida);
+
+		getline(is,x,' '); // aca veo cuanto pega
+
+		this->_cuantoPega = atoi(x.c_str());
+
+		if(!cuantoPegaEnRango(this->_cuantoPega))
+			ponerCuantoPegaEnRango(this->_cuantoPega);
+
+		getline(is,x,'}'); //para ir hasta el final y termine, si no esta esta linea carga mal
+
+	} // fin del while
+	
+}
+
+bool Vampiro::vidaEnRango(int v){
+	return (v >= 0 && v <= 100);
+}
+
+void Vampiro::ponerVidaEnRango(int& v){
+	if(v < 0){
+		v = 0;
+	} else {
+		v = 100;
+	}
+}
+
+bool Vampiro::cuantoPegaEnRango(int cP){
+	return (cP > 0);
+}
+
+void Vampiro::ponerCuantoPegaEnRango(int& cP){
+	cP = 1;
+}

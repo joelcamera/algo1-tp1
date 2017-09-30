@@ -1,0 +1,231 @@
+#include "Juego.h"
+
+Juego::Juego()
+{
+}
+
+Juego::Juego(std::vector<Flor>& flores, std::vector<Vampiro>& vamps)
+{
+	quitarRepetidosFlores(flores);
+	quitarRepetidosVampiros(vamps);
+
+	this->_flores = flores;
+	this->_vampiros = vamps;
+}
+
+int Juego::nivelActual()
+{
+	return this->_nivelActual;
+}
+
+void Juego::pasarNivel()
+{
+	this->_nivelActual = this->_nivelActual++;
+}
+
+std::vector<Flor>& Juego::floresJ()
+{
+	return this->_flores;
+}
+
+std::vector<Vampiro>& Juego::vampirosJ()
+{
+	return this->_vampiros;
+}
+
+std::vector<Nivel>& Juego::nivelesJ()
+{
+	return this->_niveles;
+}
+
+void Juego::agregarNivel(Nivel& n)
+{
+	// si no cumple los requiere no agrega el nivel.
+	if(turnoDeNivelEnRango(n) && floresDeNivelEnRango(n) && vampirosDeNivelEnRango(n))
+		this->_niveles.push_back(n);
+}
+
+std::vector<Nivel> Juego::estosSaleFacil()
+{
+}
+
+void Juego::altoCheat(int n)
+{
+}
+
+bool Juego::muyDeExactas()
+{
+}
+
+void Juego::Mostrar(std::ostream& os)
+{
+	os << "Info del juego: " << endl;
+	os << "Niveles: " << this->_niveles.size() << endl;
+	os << "Nivel actual: " << this->_nivelActual << endl;
+	os << "---------------" << endl;
+	os << "Vampiros: " << endl;
+	int i = 0;
+	while(i < this->_vampiros.size()){
+		Vampiro vamp = this->_vampiros.at(i);
+		os << "Vampiro " << i+1 << ": " << "Vida: " << vamp.vidaV() << " Cuanto pega: " << vamp.cuantoPegaV() << " Clase: " << vamp.claseV() << endl;
+		i++;
+	}
+	os << "---------------" << endl;
+	os << "Flores: " << endl;
+	i = 0;
+	while(i < this->_flores.size()){
+		Flor flor = this->_flores.at(i);
+		os << "Flor " << i+1 << ": " << "Habilidades: [";
+		int j = 0;
+		while(j < flor.habilidadesF().size()){
+			if(j < flor.habilidadesF().size() - 1){
+				os << flor.habilidadesF().at(j) << ", ";
+			}else{
+				os << flor.habilidadesF().at(j);
+			}
+			j++;
+		}
+		os << "]" << endl;
+		i++;
+	}
+}
+
+void Juego::Guardar(std::ostream& os){
+	os << "{ J";
+	
+	if(this->_flores.size() > 0){
+		os << " [ ";
+		int i = 0;
+		while(i < this->_flores.size()){
+			Flor flor = this->_flores.at(i);
+			flor.Guardar(os);	
+			os << " ";	
+			i++;
+		}
+		os << " ] ";
+	}
+	
+	if(this->_vampiros.size() > 0){
+		os << " [ ";
+		int i = 0;
+		while(i < this->_vampiros.size()){
+			Vampiro vampiro = this->_vampiros.at(i);
+			vampiro.Guardar(os);
+			os << " ";
+			i++;
+		}		
+		os << " ] ";
+	}
+	if(this->_niveles.size() > 0){
+		os << " [ ";
+		int i = 0;
+		while(i < this->_niveles.size()){
+			Nivel nivel = this->_niveles.at(i);
+			nivel.Guardar(os);
+			os << " ";
+			i++;
+		}		
+		os << " ] ";
+	}
+	os << " } ";
+}
+
+void Juego::Cargar(std::iostream& is)
+{
+}
+
+bool Juego::turnoDeNivelEnRango(Nivel n){
+	return n.turnoN() == 0;	
+}
+
+bool Juego::floresDeNivelEnRango(Nivel n){
+	return n.floresN().size() == 0;
+}
+
+bool Juego::vampirosDeNivelEnRango(Nivel n){
+	return n.vampirosN().size() == 0;
+}
+
+void Juego::quitarRepetidosFlores(std::vector<Flor>& flores){
+	int i = flores.size() - 1;
+	int j;
+	Flor f1;
+	Flor f2;
+
+	while (0 < i){
+		f1 = flores.at(i);
+		j = i - 1;
+
+		while(0 <= j){
+			f2 = flores.at(j);
+			if(mismasHabilidadesFlor(f1,f2)){
+				flores.pop_back();
+				break;
+			}
+			j--;
+		}
+		i--;
+	}
+}
+
+bool Juego::mismasHabilidadesFlor(Flor f1, Flor f2){
+  int res = true;
+
+  if(f1.habilidadesF().size() != f2.habilidadesF().size()){
+    return false;
+  } else {
+    int i = 0;
+
+    while(i < f1.habilidadesF().size()){
+
+      if(!habilidadPerteneceAFlor(f1.habilidadesF().at(i),f2))
+        res = false;
+      i++;
+    }
+  return res;
+  }
+}
+
+bool Juego::habilidadPerteneceAFlor(int h, Flor f2){
+  bool res = false;
+  int i = 0;
+
+  while(i < f2.habilidadesF().size()){
+    if(f2.habilidadesF().at(i) == h)
+      res = true;
+    i++;
+  }
+
+  return res;
+}
+
+void Juego::quitarRepetidosVampiros(std::vector<Vampiro>& vamp){
+	Vampiro v1;
+	Vampiro v2;
+	int i = vamp.size() - 1;
+	int j;
+
+	while(0 < i){
+		v1 = vamp.at(i);
+		j = i - 1;
+
+		while(0 <= j){
+			v2 = vamp.at(j);
+
+			if(vampirosIguales(v1,v2)){
+				vamp.pop_back();
+				break;
+			}
+
+			j--;
+		}
+
+		i--;
+	}
+}
+
+bool Juego::vampirosIguales(Vampiro v1, Vampiro v2){
+	if(v1.vidaV() == v2.vidaV() && v1.claseV() == v2.claseV() && v1.cuantoPegaV() == v2.cuantoPegaV())
+		return true;
+	return false;
+}

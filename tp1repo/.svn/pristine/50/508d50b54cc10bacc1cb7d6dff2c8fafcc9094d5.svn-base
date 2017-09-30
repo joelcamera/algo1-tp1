@@ -1,0 +1,53 @@
+#include "Vampiro.h"
+#include <cassert>
+
+Vampiro::Vampiro()
+{
+}
+
+Vampiro::Vampiro(ClaseVampiro cv, Vida v, int cP)
+{
+	_vida = v;
+	_cuantoPega = cP;
+	_clase	= cv;
+}
+
+Vida Vampiro::vidaV()
+{
+	return _vida;
+}
+
+ClaseVampiro Vampiro::claseV()
+{
+	return _clase;
+}
+
+int Vampiro::cuantoPegaV()
+{
+	return _cuantoPega;
+}
+
+void Vampiro::Mostrar(std::ostream& os)
+{
+}
+
+void Vampiro::Guardar(std::ostream& os)
+{
+	os << "{ V ";
+	
+	if(_clase == 0){
+		os << "Caminante ";
+	} else {
+		os << "Desviado ";
+	}
+
+	std::string strVida = std::to_string(_vida);
+	os << strVida << " ";
+	
+	std::string strCuantoPega = std::to_string(_cuantoPega);
+	os << strCuantoPega << " }";
+}
+
+void Vampiro::Cargar(std::istream& is)
+{
+}

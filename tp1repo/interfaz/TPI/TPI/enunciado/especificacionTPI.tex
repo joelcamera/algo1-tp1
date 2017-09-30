@@ -1,0 +1,601 @@
+\documentclass[spanish,a4paper]{article} 
+
+\usepackage{babel}
+\usepackage{soul}
+\usepackage[latin1]{inputenc}
+%\usepackage{bbm}
+\usepackage{framed}
+\input{../../../macros/Algo1Macros}
+
+
+
+
+\begin{document}
+
+\materia{Algoritmos y Estructura de Datos I}
+\cuatrimestre{1}
+\anio{2015}
+
+\fecha{6 de Mayo de 2015}
+
+\nombre{\LARGE TPI - Flores vs Vampiros}
+
+\titulotp
+
+\section{Tipos}
+
+\input{tipos/tipos.tex}
+
+\section{Flor}
+\input{tipos/flor.tex}
+
+
+\begin{problema}[this]{nuevaF}{v : \ent, cP : \ent, hs : [Habilidad]}{Flor} 
+
+\requiere{sinRepetidos(hs)}
+\requiere{vidaDeFlorValida(v, hs)}
+\requiere{cuantoPegaFlorValido(cP, hs)}
+\asegura{mismos(hs, habilidades(\res))}
+
+\end{problema}
+
+
+\begin{problema}{vidaF}{this : Flor}{\ent} 
+\asegura{\res == vida(this)}
+\end{problema}
+
+\begin{problema}{cuantoPegaF}{this : Flor}{\ent} 
+\asegura{\res == cuantoPega(this)}
+\end{problema}
+
+\begin{problema}{habilidadesF}{this : Flor}{[Habilidad]} 
+\asegura{mismos(\res, habilidades(this))}
+\end{problema}
+
+
+
+\section{Vampiro}
+\input{tipos/vampiro.tex}
+
+
+\begin{problema}[this]{nuevoV}{cv : claseVampiro, v : \ent, cP: \ent}{Vampiro}
+	\requiere{v \geq 0 \wedge v \leq 100}
+	\requiere{cP > 0}
+	\asegura {clase(\res)==cv}
+	\asegura {vida(\res)==v}
+	\asegura {cuantoPega(\res)==cP}
+\end{problema}
+
+
+\begin{problema}{claseVampiroV}{this : Vampiro}{ClaseVampiro}
+	\asegura{\res == clase(this)}
+\end{problema}
+
+\begin{problema}{vidaV}{this : Vampiro}{\ent} 
+	\asegura{\res == vida(this)}
+\end{problema}
+
+\begin{problema}{cuantoPegaV}{this : Vampiro} {\ent} 
+	\asegura{\res == cuantoPega(this)}
+\end{problema}
+
+
+% problemas igual a Flor
+
+\section{Nivel}
+\input{tipos/nivel.tex}
+
+
+\begin{problema}[this]{nuevoN}{an : \ent, al : \ent, s: \ent, spaw : [(Vampiro, \ent, \ent)]}{Nivel}
+
+	\requiere{an > 0}
+	\requiere{al > 0}
+	\requiere{s \geq 0}
+	\requiere[filasSpawnValidas]{
+		(\forall\ \selector{s}{spaw})\ filaSpawn(s) \geq 1 \wedge filaSpawn \leq al	
+	}
+	\requiere[turnosSpawnValidos]{
+		(\forall\ \selector{s}{spaw})\ turnoSpawn(s) \geq 0	
+	}
+	\requiere[spawningOrdenado]{
+		duplasOrdenadas([(turnoSpawn(spawn), filaSpawn(spawn))|\selector{spawn}{spaw}])	
+	}
+	\asegura{ancho(\res) == an}
+	\asegura{alto(\res) == al}
+	\asegura{soles(\res) == s}
+	\asegura{mismos(spawning(\res), spaw)}
+	\asegura{|vampiros(\res)| == 0}
+	\asegura{|flores(\res)| == 0}
+	\asegura{turno(n) == 0}
+
+\end{problema}
+
+\begin{problema}{anchoN}{this: Nivel} {\ent} 
+
+	\asegura{\res == ancho(this)}
+
+\end{problema}
+
+\begin{problema}{altoN}{this: Nivel} {\ent} 
+
+	\asegura{\res == alto(this)}
+
+\end{problema}
+
+
+\begin{problema}{turnoN}{this: Nivel} {\ent} 
+
+	\asegura{\res == turno(this)}
+
+\end{problema}
+
+\begin{problema}{solesN}{this: Nivel} {\ent} 
+
+	\asegura{\res == soles(this)}
+
+\end{problema}
+
+\begin{problema}{floresN}{this: Nivel} {[(Flor,Posicion,Vida)]} 
+	
+	\asegura{mismasFloresDeNivel(flores(this), \res)}
+
+\end{problema}
+
+\begin{problema}{vampirosN}{this: Nivel}{[(Vampiro,Posicion,Vida)]} 
+
+	\asegura{mismos(\res, vampiros(nthis)}
+
+\end{problema}
+
+
+\begin{problema}{spawningN}{this : Nivel}{[(Vampiro, \ent, \ent)]}
+
+	\asegura{mismos(\res, spawning(this))}
+	\asegura{
+		duplaOrdenada([(turnoSpawn(spawn), filaSpawn(spawn))|\selector{spawn}{\res}])	
+	}
+
+\end{problema}
+
+
+\begin{problema}{comprarSoles}{this : Nivel, s : \ent}{}
+	
+	\requiere{s > 0}
+	\modifica{this}
+	\asegura{ancho(this) == ancho(\pre{this})}
+	\asegura{alto(this) == alto(\pre{this})}
+	\asegura{turno(this) == turno(\pre{this})}
+	\asegura{soles(this) == soles(\pre{this}) + s}
+	\asegura{mismasFloresDeNivel(flores(this), flores(\pre{this}))}
+	\asegura{mismos(vampiros(this), vampiros(\pre{this}))}
+	\asegura{mismos(spawning(this), spawning(\pre{this}))}
+	
+\end{problema}
+
+\begin{problema}{obsesivoCompulsivo}{this : Nivel}{\bool}
+	\asegura{\res \Iff \\
+		((\forall\ 
+			\selector{i}{\rangoca{0}{|flores(this)|}},
+			\selector{j}{\rangoca{0}{|flores(this)|}},\\
+			i \neq j \wedge posicionMayorInmediata(i, j, posicionesFlores(flores(this)))		
+		) \\
+			Atacar \in habilidades(prm(flores(this)_i)) ==
+			\neg(Atacar \in habilidades(prm(flores(this)_j)))
+		))
+	}
+
+\end{problema}
+
+\begin{problema}{agregarFlor}{this : Nivel, f : Flor, p : Posicion}{}
+
+	\requiere[sinColisiones]{
+		(\forall\ \selector{flor}{flores(this)})\ sgd(flor) \neq p
+	}
+	\requiere[solesSuficientes]{
+		soles(this) \geq 2^{|habilidades(f)|}	
+	}
+	\modifica{this}
+	\asegura{ancho(this) == ancho(\pre{this})}
+	\asegura{alto(this) == alto(\pre{this})}
+	\asegura{turno(this) == turno(\pre{this})}
+	\asegura{soles(this) == soles(\pre{this}) - 2^{|habilidades(f)|}}
+	\asegura{mismasFloresDeNivel(flores(this), (f, p, vida(f)):flores(\pre{this}))}
+	\asegura{mismos(vampiros(this), vampiros(\pre{this}))}
+	\asegura{mismos(spawning(this), spawning(\pre{this}))}
+	
+
+\end{problema}
+
+\begin{problema}{pasarTurno}{this : Nivel}{}
+
+	\requiere{\neg terminado(this)}
+	\modifica{this}
+	\asegura{ancho(this) == ancho(\pre{this})}
+	\asegura{alto(this) == alto(\pre{this})}
+	\asegura{turno(this) == turno(\pre{this}) + 1}
+	\asegura{soles(this) == soles(\pre{this}) + \\
+		|[flor|\selector{flor}{flores(\pre{this})}, Generar \in habilidades(prm(flor))]| + 1}
+	\asegura{mismasFloresDeNivel(flores(this), floresDaniadas(\pre{this}))}
+	\asegura{mismos(vampiros(this), vampirosMovidos(vampirosDaniados(\pre{this}), \pre{this}) \masmas nuevosVampiros(\pre{this}))}
+	\asegura{mismos(spawning(this), proximosVampiros(\pre{this}))}
+\end{problema}
+
+
+
+\section{Juego}
+\input{tipos/juego.tex}
+
+\begin{problema}[this]{nuevoJ}{fs:[Flor], vs:[Vampiro]}{Juego}
+	\asegura{mismasFlores(flores(this),fs)}
+	\asegura{mismos(vampiros(this),vs)}
+	\asegura{|niveles(this)|==0}
+\end{problema}
+
+
+\begin{problema}{floresJ}{this: Juego}{[Flor]}     
+
+	\asegura{mismasFlores(\res, flores(this))}
+
+\end{problema}
+
+\begin{problema}{vampirosJ}{this: Juego} {[Vampiro]} 
+
+	\asegura{mismos(\res, vampiros(this))}
+
+\end{problema}
+
+\begin{problema}{nivelesJ}{this: Juego} {[Nivel]} 
+
+	\asegura{|\res| == |niveles(this)|}
+	\asegura{(\forall\ \selector{i}{\rangoca{0}{|niveles(this)|}})\  nivelesIguales(\res_i, niveles(this)_i)}
+
+\end{problema}
+
+\begin{problema}{agregarNivel}{this: Juego , n : Nivel , i : \ent} {}
+	\requiere{0 \leq i \leq |niveles(this)|}
+	\requiere{|flores(n)| == 0}
+	\requiere{|vampiros(n)| == 0}
+	\requiere{turno(n) == 0}
+	
+	\modifica{this}
+	
+	\asegura{mismasFlores(flores(this), flores(\pre{this}))}
+	\asegura{mismos(vampiros(this), vampiros(\pre{this}))}
+	\asegura{|niveles(this)| == |niveles(\pre{this})| + 1}
+	\asegura{(\forall\ \selector{k}{\rangoca{0}{i}})\ nivelesIguales(niveles(this)_k, niveles(\pre{this})_k)}
+	\asegura{nivelesIguales(n, niveles(this)_i)}
+	\asegura{(\forall\ \selector{k}{\rangoca{i+1}{|niveles(\pre{this}) + 1|}})\ nivelesIguales(niveles(this)_k, niveles(\pre{this})_{k-1})}
+\end{problema}
+
+
+\begin{problema}{estosSaleFacil}{this: Juego}{[Nivel]}  
+	\asegura{mismosNiveles(\res, nivelesFaciles(this))}
+\end{problema}
+
+\begin{problema}{jugarNivel}{this : Juego, n : Nivel, i : \ent}{}
+
+	\requiere{0 \leq i < |niveles(this)|}
+	\requiere{ancho(n) == ancho(niveles(this)_i)}
+	\requiere{alto(n) == alto(niveles(this)_i)}
+	\requiere{turno(n) > turno(niveles(this)_i)}
+	\requiere{mismos(spawning(n), [spawn|\selector{spawn}{spawning(niveles(this)_i)},  turnoSpawn(spawn) > turno(n)])}
+	
+	\modifica{this}
+	
+	\asegura{mismasFlores(flores(this), flores(\pre{this}))}
+	\asegura{mismos(vampiros(this), vampiros(\pre{this}))}
+	\asegura{|niveles(this)| == |niveles(\pre{this})|}
+	\asegura{(\forall\ \selector{k}{\rangoca{0}{|niveles(\pre{this})|}}, k \neq i)\ nivelesIguales(niveles(this)_k, niveles(\pre{this})_k)}
+	\asegura{ancho(niveles(this)_i) == ancho(n)}
+	\asegura{alto(niveles(this)_i) == alto(n)}
+	\asegura{turno(niveles(this)_i) == turno(n)}
+	\asegura{soles(niveles(this)_i) == soles(n)}
+	\asegura{mismasFloresDeNivel(flores(niveles(this)_i), flores(n))}
+	\asegura{mismos(vampiros(niveles(this)_i), vampiros(n))}
+	\asegura{mismos(spawning(niveles(this)_i), spawning(n))}
+	
+\end{problema}
+
+\begin{problema}{altoCheat}{this : Juego, i : \ent}{}
+
+	\requiere{0 \leq i < |niveles(this)|}
+	\modifica{this}
+	\asegura{mismasFlores(flores(this), flores(\pre{this}))}
+	\asegura{mismos(vampiros(this), vampiros(\pre{this}))}
+	\asegura{|niveles(this)| == |niveles(\pre{this})|}
+	\asegura{(\forall\ \selector{k}{\rangoca{0}{|niveles(\pre{this})|}}, k \neq i)\ 
+		nivelesIguales(niveles(this)_k, niveles(\pre{this})_k)}
+	\asegura{ancho(niveles(this)_i) == ancho(niveles(\pre{this})_i)}
+	\asegura{alto(niveles(this)_i) == alto(niveles(\pre{this})_i)}
+	\asegura{turno(niveles(this)_i) == turno(niveles(\pre{this})_i)}
+	\asegura{soles(niveles(this)_i) == soles(niveles(\pre{this})_i)}
+	\asegura{mismasFloresDeNivel(flores(niveles(this)_i), flores(niveles(\pre{this})_i))}
+	\asegura{mismos(vampiros(niveles(this)_i), vampirosMitadVida(vampiros(niveles(\pre{this})_i))}
+	\asegura{mismos(spawning(niveles(this)_i), spawning(niveles(\pre{this})_i))}
+	
+\end{problema}
+
+\begin{problema}{muyDeExactas}{this : Juego}{\bool}
+	\requiere{|nivelesGanados(this)| > 0}	
+	\asegura	{\res \Iff (\\
+		(|nivelesGanados(this)| \geq 1 \implica nivelesGanados(this)_0 == 1) \wedge \\
+		(|nivelesGanados(this)| \geq 2 \implica nivelesGanados(this)_1 == 2) \wedge \\
+		(|nivelesGanados(this)| > 2 \implica (\forall\ \selector{i}{\rangoca{2}{|nivelesGanados(this)|}})\
+		nivelesGanados(this)_i == nivelesGanados(this)_{i-1} \ + \ nivelesGanados(this)_{i-2}))
+	}
+	
+	
+\end{problema}
+
+\section{Auxiliares}
+\aux{vidaFloresOk}{fs: [(Flor, Posicion, Vida)]}{\bool}{(\forall f \selec fs) trd(f) > 0 \land trd(f) \leq vida(prm(f))}
+\aux{vidaVampirosOk}{fs: [(Vampiro, Posicion, Vida)]}{\bool}{(\forall f \selec fs) trd(f) > 0 \land trd(f) \leq vida(prm(f))}
+\aux{floresIguales}{x, y}{\bool}{mismos(habilidades(x), habilidades(y))}
+
+\aux{vidaDeFlorValida}{vida : \ent, habilidades : [Habilidad]}{\bool} {
+	(vida == (100 \ div \ (|habilidades| + 1)))
+}
+
+\aux{cuantoPegaFlorValido}{cuantoPega : \ent, habilidades : [Habilidad]}{\bool} {
+	(Atacar \in habilidades \wedge cuantoPega == (12 \ div \ |habilidades|))
+	\vee
+	(Atacar \notin habilidades \wedge cuantoPega == 0)
+}
+
+
+\aux{fila}{pos: Posicion}{\ent}{
+	sgd(pos)
+}
+
+\aux{columna}{pos: Posicion}{\ent}{
+	prm(pos)
+}
+
+\aux{posicionEnNivel}{pos : Posicion, n : Nivel}{\bool}{
+	columna(pos) \geq 1 \wedge
+	columna(pos) \leq ancho(n) \\*
+	\wedge 	
+	fila(pos) \geq 1 \wedge 
+	fila(pos) \leq alto(n)
+}
+
+\aux{posicionVampiroEnNivel}{posVampiro : Posicion, n : Nivel}{\bool}{
+	columna(posVampiro) \geq 0 \\* 
+	\wedge
+	columna(posVampiro) \leq ancho(n) \wedge
+	fila(posVampiro) \geq 1 \wedge 
+	fila(posVampiro) \leq alto(n)
+}
+
+\aux{vampirosEnCuadricula}{n : Nivel}{\bool}{
+	(\forall\ \selector{v}{vampiros(n)})\ posicionVampiroEnNivel(sgd(v), n)
+}
+
+\aux{floresEnCuadricula}{n : Nivel}{\bool}{
+	(\forall\ \selector{f}{flores(n)})\ posicionEnNivel(sgd(f), n)
+}
+
+
+\aux{turnoSpawn}{spawn : (Vampiro, \ent, \ent)}{\ent}{
+	trc(spawn)
+}
+
+\aux{filaSpawn}{spawn : (Vampiro, \ent, \ent)}{\ent}{
+	sgd(spawn)
+}
+
+\aux{ordenada}{lista : [\ent]}{\bool}{
+	|lista| \leq 1 \vee (\forall\ \selector{i}{\rangoca{1}{|lista|}})\ 
+	lista_{i-1} \leq lista_i
+}
+
+\aux{duplasOrdenadas}{listDuplas : [(\ent, \ent)]}{\bool}{
+	|listaDuplas| \leq 1 \vee
+	(ordenada(
+		[prm(dupla) | \selector{dupla}{listaDuplas}]
+	) \wedge (\forall\ \selector{i}{\rangoca{1}{|listaDuplas|}}, 
+		prm(listaDupla_{i-1}) == prm(listaDupla_i))\ 
+		sgd(listaDupla_{i-1}) \leq sgd(listaDupla_i)
+	)	
+}
+
+
+\aux{cuentaFloresDeNivel}{flor : (Flor, Posicion, Vida), flores: [(Flor, Posicion, Vida)]}{\ent}{
+	|[f|\selector{f}{flores}, \\
+		floresIguales(prm(flor), prm(f)) \wedge
+		sgd(flor) == sgd(f) \wedge
+		trc(flor) == trc(f)		
+	]|
+}
+
+\aux{mismasFloresDeNivel}{floresA : [(Flor, Posicion, Vida)], floresB : [(Flor, Posicion, Vida)]}{\bool}{
+	|floresA| == |floresB| \wedge (\forall\ \selector{flor}{floresA})\
+		cuentaFloresDeNivel(flor, floresA) == cuentaFloresDeNivel(flor, floresB)
+}
+
+\aux{posicionMayor}{a : Posicion, b : Posicion}{\bool}{
+	fila(a) > fila(b) \vee (fila(a) == fila(b) \wedge columna(a) > columna(b))
+}
+
+\aux{posicionMenor}{a : Posicion, b : Posicion}{\bool}{
+	a \neq b \wedge \neg posicionMayor(a, b)
+}
+
+\aux{posicionMayorInmediata}{a : \ent, b : \ent, lista : [Posicion]}{\bool}{
+	posicionMayor(lista_a, lista_b) \wedge \\
+	(\forall\ \selector{i}{\rangoca{0}{|lista|}}, a \neq i \wedge b \neq i)\
+	\neg(posicionMayor(lista_i, lista_b) \wedge posicionMenor(lista_i, lista_a))
+}
+
+\aux{posicionesFlores}{fs: [(Flor, Posicion, Vida)]}{[Posicion]}{
+	\comp{sgd(f)}{f \selec fs }
+}
+
+\aux{vampirosEnCasa}{vampiros : [(Vampiro, Posicion, Vida)]}{\ent}{
+	\\
+	|[vampiro | \selector{vampiro}{vampiros}, columna(sgd(vampiro)) == 0]|
+}
+
+\aux{florExploto}{flor : (Flor, Posicion, Vida), vampiros : [(Vampiro, Posicion, Vida)]}{\bool}{
+	\\
+	Explotar \in habilidades(prm(flor)) \wedge (\exists\ \selector{v}{vampiros})\ sgc(v) == sgd(flor)
+}
+
+\aux {daniarFlor}{flor : (Flor, Posicion, Vida), vampiros : [(Vampiro, Posicion, Vida)]}{(Flor, Posicion, Vida)}{
+	\\
+	(prm(flor), sgd(flor), trc(flor) - \sum[cuantoPega(prm(v))|\selector{v}{vampiros}, sgd(v) == sgd(flor)])
+}
+
+\aux{florMuerta}{flor : (Flor, Posicion, Vida), vampiros : [(Vampiro, Posicion, Vida)]}{\bool}{
+	\\
+	florExploto(flor, vampiros) \vee trc(daniarFlor(flor, vampiros)) \leq 0
+}
+
+\aux{floresDaniadas}{n : Nivel}{[(Flor, Posicion, Vida)]}{
+	[daniarFlor(flor, vampiros(n)) |\\ 
+	\selector{flor}{flores(n)}, \neg florMuerta(flor, vampiros(n))]
+}
+
+\aux{enMira}{flor : (Flor, Posicion, Vida), vampiro : (Vampiro, Posicion, Vida)}{\bool}{
+	\\
+	fila(sgd(flor)) == fila(sgd(vampiro)) \wedge columna(sgd(flor)) \leq columna(sgd(vampiro))
+}
+
+\aux{intercepta}{flor : (Flor, Posicion, Vida), vampiro : (Vampiro, Posicion, Vida), vampiros : [(Vampiro, Posicion, Vida)]}{\bool}{
+	(\exists\ \selector{v}{vampiros})\ fila(sgd(v)) == fila(sgd(flor))\ \wedge columna(sgd(flor)) \leq columna(sgd(v)) < columna(sgd(vampiro))
+}
+
+\aux{daniarVampiro}{vampiro : (Vampiro, Posicion, Vida), flores : [(Flor, Posicion, Vida)], vampiros : [(Vampiro, Posicion, Vida)]}{(Vampiro, Posicion, Vida)}{
+	(prm(vampiro), sgd(vampiro), trc(vampiro) - 
+	\\	
+	\sum[cuantoPega(prm(f))|\selector{f}{flores(n)}, enMira(f, vampiro) \wedge \neg intercepta(f, vampiro, vampiros)])\
+}
+
+\aux{vampiroMuerto}{vampiro : (Vampiro, Posicion, Vida), flores : [(Flor, Posicion, Vida)], vampiros : [(Vampiro, Posicion, Vida)]}{\bool}{
+	trc(daniarVampiro(vampiro, flores, vampiros)) \leq 0
+}
+
+\aux{vampirosDaniados}{n : Nivel}{[(Vampiro, Posicion, Vida)]}{
+	[daniarVampiro(vampiro, flores(n), vampiros(n))|\\ \selector{vampiro}{vampiros(n)}, \neg vampiroMuerto(vampiro, flores(n), vampiros(n))]
+}
+
+\aux{florSobreviviente}{pos : Posicion, flores: [(Flor, Posicion, Vida)], vampiros : [(Vampiro, Posicion, Vida)]}{\bool}{
+	(\exists\ \selector{flor}{flores})\ sgd(flor) == pos \wedge \neg florMuerta(flor, vampiros)
+}
+
+\aux{florExplotada}{pos : Posicion, flores : [(Flor, Posicion, Vida)], vampiros : [(Vampiro, Posicion, Vida)]}{\bool}{
+	(\exists\ \selector{flor}{flores})\ sgd(flor) == pos \wedge florExploto(flor, vampiros)
+}
+
+\aux{intentarRetroceder}{pos : Posicion, anchoNivel : \ent}{Posicion}{
+	\\
+	\IfThenElse
+	{columna(pos) < anchoNivel \\}
+	{(columna(pos) + 1, fila(pos)) \\}
+	{pos}
+}
+
+\aux{intentarDesvio}{vampiro : (Vampiro, Posicion, Vida)}{Posicion}{
+	\\
+	\IfThenElse
+	{clase(prm(vampiro)) == Desviado \wedge fila(sgd(vampiro)) > 1 \\}
+	{(columna(sgd(vampiro)) - 1, fila(sgd(vampiro)) - 1) \\}
+	{(columna(sgd(vampiro)) - 1, fila(sgd(vampiro)))}
+}
+
+\aux{intentarAvanzar}{vampiro : (Vampiro, Posicion, Vida), n : Nivel}{Posicion}{
+	\\
+	\IfThenElse
+	{florExplotada(sgd(vampiro), flores(n), vampiros(n)) \\}
+	{intentarRetroceder(sgd(vampiro), ancho(n)) \\}
+	{intentarDesvio(vampiro)}
+}
+
+\aux{mover}{vampiro : (Vampiro, Posicion, Vida), n : Nivel}{(Vampiro, Posicion, Vida)}{
+	\\
+	(prm(vampiro), \\
+	\IfThenElse
+	{florSobreviviente(sgd(vampiro), flores(n), vampiros(n)) \\}
+	{sgd(vampiro) \\}
+	{intentarAvanzar(vampiro, n)}, \\
+	trc(vampiro))
+}
+
+\aux{vampirosMovidos}{vampiros : [(Vampiro, Posicion, Vida)], n : Nivel}{[(Vampiro, Posicion, Vida)]}{
+	[mover(vampiro, n)|\\
+	\selector{vampiro}{vampiros}]
+}
+
+\aux{nuevosVampiros}{n : Nivel}{[(Vampiro, Posicion, Vida)]}{
+	[(prm(spawn), (ancho(n), filaSpawn(spawn)), \\
+		vida(prm(spawn)))|\selector{spawn}{spawning(n), turnoSpawn(spawn) == turno(n) + 1}]
+}
+
+\aux{proximosVampiros}{n : Nivel}{[(Vampiro, \ent, \ent)]}{
+	[spawn|\selector{spawn}{spawning(n)}, turnoSpawn(spawn) > turno(n) + 1]
+}
+
+
+
+\aux{florEnLista}{flor : Flor, listaFlores : [Flor]}{\bool}{
+	(\exists\ \selector{f}{listaFlores})\ floresIguales(flor, f)
+}
+
+
+
+\aux{cuentaFlores}{flor : Flor, flores : [Flor]}{\ent}{
+	|[f|\selector{f}{flores}, floresIguales(f, flor)]|
+}
+
+\aux{mismasFlores}{floresA : [Flor], floresB : [Flor]}{\bool}{
+	|floresA| == |floresB| \wedge \\ 
+	(\forall\ \selector{flor}{floresA})\
+		cuentaFlores(flor, floresA) == cuentaFlores(flor, floresB)
+}
+
+
+
+\aux{nivelesIguales}{nA : Nivel, nB : Nivel}{\bool}{
+	\\
+	ancho(nA) == ancho(nB) \wedge \\
+	alto(nA) == alto(nB) \wedge \\
+	turno(nA) == turno(nB) \wedge \\
+	soles(nA) == soles(nB) \wedge \\
+	mismasFloresDeNivel(flores(nA), flores(nB)) \wedge \\
+	mismos(vampiros(nA), vampiros(nB)) \wedge \\
+	mismos(spawning(nA), spawning(nB))
+}
+
+\aux{masFacil}{nA : Nivel, nB : Nivel}{\bool}{
+	soles(nA) > soles(nB) \vee (soles(nA) == soles(nB) \wedge |flores(nA)| > |flores(nb)|)
+}
+
+\aux{nivelesFaciles}{j: Juego}{[Nivel]}{
+	\\ \comp{n}{\selector{n}{niveles(j), \neg ((\exists\ \selector{candidato}{niveles(j)})\ (masFacil(candidato, nivel))) }}
+}
+
+\aux{mismosNiveles}{a,b: [Nivel]}{\bool}{
+	\longitud{a} == \longitud{b} \land \\ (\forall \selector{x}{a}) cantidadNivelesIguales(x,a) == cantidadNivelesIguales(x,b)
+}
+
+\aux{cantidadNivelesIguales}{niv: Nivel, ns: [Nivel]}{\ent}{
+	\longitud{\comp{n}{\selector{n}{ns}, nivelesIguales(n, niv)}}
+}
+
+\aux{vampirosMitadVida}{vampiros : [(Vampiro, Posicion, Vida)]}{[(Vampiro, Posicion, Vida)]}{
+	[\\(prm(vampiro), sgd(vampiro), trc(vampiro) \ div \ 2)| \selector{vampiro}{vampiros}, trc(vampiro) \ div \ 2 > 0]
+}
+
+
+
+\aux{terminado}{n : Nivel}{\bool}{
+	(|vampiros(n)| == 0 \wedge |spawning(n)| == 0) \vee vampirosEnCasa(vampiros(n)) > 0
+}
+
+\aux{nivelesGanados}{j : Juego}{[\ent]}{
+	[i | \selector{i}{\rangoca{0}{|niveles(j)|}, |spawning(niveles(j)_i)| == 0 \wedge |vampiros(niveles(j)_i)| == 0}]
+}
+
+\end{document}
+
+\end{document}

@@ -1,0 +1,63 @@
+#include "Flor.h"
+#include <cassert>
+
+
+Flor::Flor(){}
+
+Flor::Flor(Vida v, int cP, std::vector<Habilidad> hs)
+{
+	//assert(sinRepetidos(hs));
+	//assert(vidaDeFlorValida(v,hs));
+	//assert(cuantoPegaFlorValido(cP,hs));
+	this->_vida = v;
+	this->_cuantoPega = cP;
+	this->_habilidades = hs;
+}
+
+Vida Flor::vidaF()
+{
+	return _vida;
+}
+
+int Flor::cuantoPegaF()
+{
+	return _cuantoPega;
+}
+
+std::vector<Habilidad>& Flor::habilidadesF()
+{
+	return _habilidades;
+}
+
+void Flor::Mostrar(std::ostream& os)
+{	
+}
+
+void Flor::Guardar(std::ostream& os)
+{
+	os << "{ F ";
+
+	std::string strVida = std::to_string(this->_vida);
+	os << strVida << " ";
+
+	std::string strCuantoPega = std::to_string(this->_cuantoPega);
+	os << strCuantoPega << " [ ";
+
+	int i = 0;
+	
+	while (i < _habilidades.size()){
+		if(_habilidades.at(i) == 0){
+			os << "Generar ";
+		} else if(_habilidades.at(i) == 1){
+			os << "Atacar ";
+		} else{
+			os << "Explotar ";
+		}
+		i++;
+	}	
+	os << "] }";
+}
+
+void Flor::Cargar(std::istream& is)
+{
+}

@@ -1,0 +1,157 @@
+\documentclass[spanish,a4paper]{article} 
+
+\usepackage{babel}
+\usepackage{soul}
+\usepackage[latin1]{inputenc}
+%\usepackage{bbm}
+\usepackage{framed}
+\input{../../../macros/Algo1Macros}
+
+
+
+
+\begin{document}
+
+\materia{Algoritmos y Estructura de Datos I}
+\cuatrimestre{1}
+\anio{2015}
+
+\fecha{6 de Mayo de 2015}
+
+\nombre{\LARGE TPI - Flores vs Vampiros}
+
+\titulotp
+
+\section{Introducci\'on}
+
+En el TPE, hemos especificado el comportamiento de una serie de 
+problemas relacionados con el juego Flores vs Vampiros. Nuestro pr\'oximo paso ser\'a
+obtener una implementaci\'on en lenguaje imperativo, para esto se brinda una adaptaci\'on de la especificaci\'on original.
+
+El objetivo de este trabajo es programar toda la especificaci\'on, usando los
+comandos de C++ vistos en clase. Pueden utilizar las clase \texttt{vector} provista en la stl de C++, pero s\'olo se permitir\'a el uso de los m\'etodos especificados en este enunciado.
+
+En la p\'agina de la materia estar\'an disponibles los \emph{headers} de las clases que deber\'an
+implementar y la especificaci\'on de cada uno de sus m\'etodos.
+
+Pueden agregar los m\'etodos auxiliares que necesiten. Estos deben
+estar \emph{en todos los casos} en la parte privada de la clase. No se
+permite modificar la parte p\'ublica de las clases ni agregar atributos
+adicionales, ya sean p\'ublicos o privados. 
+
+
+\section{Clase \texttt{std::vector}}
+Usaremos el tipo [T] (lista) para especificar la clase vector$<$T$>$. 
+
+\begin{problema}[this]{nuevoV}{}{[T]}
+\asegura{\longitud{\res} == 0}
+\end{problema}
+
+\begin{problema}{size}{this: [T]}{\ent}
+\asegura{\res == \longitud{this}}
+\end{problema}
+
+\begin{problema}{empty}{this: [T]}{\bool}
+\asegura{\res == (\longitud{this} == 0)}
+\end{problema}
+
+\begin{problema}{at}{this: [T], i: \ent}{T}
+\requiere{0 \leq i < \longitud{this}}
+\asegura{\res == this_i}
+\end{problema}
+Nota: el operador [] cumple la misma especificaci\'on, tambi\'en pueden usarlo.
+
+\begin{problema}{push\_back}{this: [T], e: T}{}
+\modifica{this}
+\asegura{this == pre(this) ++ [e]}
+\end{problema}
+
+\begin{problema}{pop\_back}{this: [T]}{}
+\requiere{\longitud{this}>0}
+\modifica{this}
+\asegura{pre(this) ==this ++ [e]}
+\end{problema}
+
+\section{Implementaci\'on de tipos}
+
+Los tipos Flor, Vampiro, Nivel y Juego mantienen, dentro de la clase, atributos que son similares a sus observadores y por lo tanto es trivial comprender su equivalencia. Dentro de la clase Nivel pueden encontrarse los structs \texttt{FlorEnJuego}, \texttt{VampiroEnJuego} y \texttt{VampiroEnEspera}, los cuales representan las triplas que contienen las flores, los vampiros y el spawning de cada nivel.
+
+\section{Entrada/Salida}
+
+Todas las clases del proyecto tienen tres m\'etodos relacionados con
+entrada salida:
+
+\begin{description}
+\item[mostrar]: que se encarga de mostrar todo el contenido de la
+  instancia de la clase en el flujo de salida indicado. El formato
+  es a gusto del consumidor, pero esperamos que sea algo m\'as o menos informativo.
+\item[guardar]: que se encarga de escribir la informaci\'on de cada
+  instancia en un formato predeterminado que debe ser decodificable
+  por el m\'etodo que se detalla a continuaci\'on.
+\item[cargar]: que se encarga de leer e interpretar informaci\'on
+  generada por el m\'etodo anterior, modificando el valor del
+  par\'ametro impl\'icito para que coincida con aquel que gener\'o la
+  informaci\'on.
+\end{description}
+
+En definitiva, \texttt{guardar} se usar\'a para ``grabar'' en un
+archivo de texto el contenido de una instancia mientras que ``cargar''
+se usar\'a para ``recuperar'' dicha informaci\'on. En todos los casos, sus
+interfaces ser\'an:
+
+\begin{itemize}
+\item\verb|void mostrar(std::ostream& ) const|;
+\item\verb|void guardar(std::ostream& ) const|;
+\item\verb|void cargar(std::istream& )|;
+\end{itemize}
+
+El detalle del formato que se debe usar para ``guardar'' y ``leer'' en
+cada clase se indica a continuaci\'on. Tener en cuenta que los n\'umeros
+se deben guardar como texto. Es decir, si escriben a un archivo y
+despu\'es lo miran con un editor de texto, donde escribieron un n\'umero
+65 deben ver escrito 65 y no una letra A.
+
+
+\begin{description}
+\item [Flor:] Se debe guardar \verb|"{ F "|, su vida, \verb|" "|,  su cuantoPega, \verb|" "|, su lista de habilidades separadas por espacio y \verb|" }"|. Por ejemplo, una flor que pueda Atacar y Explotar se guarda:
+\begin{verbatim}
+{ F 33 6 [ Atacar Explotar ] } 
+\end{verbatim}
+
+\item [Vampiro:] Se debe guardar \verb|"{ V "|, su clase de vampiro, \verb|" "|, su vida, \verb|" "|, su cuanto pega y \verb|" }"|. Por ejemplo, un vampiro de clase Desviado con 50 de vida y 8 de cuantoPega se guarda:
+\begin{verbatim}
+{ V Desviado 50 8 }
+\end{verbatim}
+
+
+\item [Nivel:] Se debe guardar \verb|"{ N "|, su ancho, \verb|" "|, su alto, \verb|" "|, su turno, \verb|" "|, sus soles,  \verb|" "|, su lista de flores en el juego, \verb|" "|, su lista de vampiros en el juego,  \verb|" "|, su lista de spawning y \verb|" }"|. 
+A continuaci\'on se muestra el ejemplo de un nivel al quedar guardado:
+
+\begin{verbatim}
+{ N 5 5 3 56 
+  [ ( { F 33 6 [ Atacar Explotar ] } ( 2 3 ) 10 ) ( { F 33 0 [ Generar Explotar ] } ( 2 5 ) 33 ) ]
+  [ ( { V Desviado 50 8 } ( 4 5 ) 10 ) ] 
+  [ ( { V Caminante 30 7 } 2 5 ) ] } 
+\end{verbatim}
+
+
+\item [Juego:] Se debe guardar \verb|"{ J "|, su lista de flores, \verb|" "|, su lista de vampiros, , \verb|" "|, su lista de niveles y \verb|" }"|.
+A continuaci\'on se muestra el ejemplo de un juego al quedar guardado:
+\begin{verbatim}
+{ J [ { F 33 6 [ Atacar Explotar ] } { F 33 0 [ Generar Explotar ] } ]
+    [ { V Desviado 50 8 } { V Caminante 30 7 } ]
+    [ { N 5 5 3 56 
+      [ ( { F 33 6 [ Atacar Explotar ] } ( 2 3 ) 10 ) ( { F 33 0 [ Generar Explotar ] } ( 2 5 ) 33 ) ]
+      [ ( { V Desviado 50 8 } ( 4 5 ) 10 ) ] 
+      [ ( { V Caminante 30 7 } 2 5 ) ] } ] }
+\end{verbatim}
+
+
+
+Aclaraci\'on: Tanto las listas, como las tuplas, tienen todas sus componentes separadas por espacios. Adem\'as los saltos de linea en los ejemplos de nivel y juego son simplemente para la presentaci\'on en este documento.
+
+\end{description}
+
+
+
+\end{document}

@@ -1,0 +1,9 @@
+\begin{tipo}{Vampiro}{
+	\observador{clase}{v: Vampiro}{ClaseVampiro}
+	\observador{vida}{v: Vampiro}{\ent}
+	\observador{cuantoPega}{v: Vampiro}{\ent}
+	\medskip
+	\invariante[vidaEnRango]{vida(v) \geq 0 \land vida(v) \leq 100}
+	\invariante[pegaEnSerio]{cuantoPega(v) > 0}
+	}
+\end{tipo}

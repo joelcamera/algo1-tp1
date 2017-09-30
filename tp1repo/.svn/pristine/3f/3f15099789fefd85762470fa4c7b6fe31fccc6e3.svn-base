@@ -1,0 +1,91 @@
+#include "Vampiro.h"
+#include <cassert>
+
+using namespace std;
+
+Vampiro::Vampiro()
+{
+}
+
+Vampiro::Vampiro(ClaseVampiro cv, Vida v, int cP)
+{
+	if(vidaEnRango(v) == false)
+		ponerVidaEnRango(v);
+
+	if(cuantoPegaEnRango(cP) == false)
+		ponerCuantoPegaEnRango(cP);
+
+	this->_vida = v;
+	this->_cuantoPega = cP;
+	this->_clase = cv;
+}
+
+Vida Vampiro::vidaV()
+{
+	return _vida;
+}
+
+ClaseVampiro Vampiro::claseV()
+{
+	return _clase;
+}
+
+int Vampiro::cuantoPegaV()
+{
+	return _cuantoPega;
+}
+
+void Vampiro::Mostrar(std::ostream& os)
+{
+	os << "INFO. DEL VAMPIRO:" << endl;
+	os << "Vida del VAMPIRO: " << this->_vida << endl;
+	os << "Cuanto Pega el VAMPIRO: " << this->_cuantoPega << endl;
+	os << "Clase del Vampiro: ";
+
+	if(this->_clase == Caminante){
+		os << "Caminante" << endl;
+	} else {
+		os << "Desviado" << endl;
+	}
+}
+
+void Vampiro::Guardar(std::ostream& os)
+{
+	os << "{ V ";
+	
+	if(_clase == 0){
+		os << "Caminante ";
+	} else {
+		os << "Desviado ";
+	}
+
+	std::string strVida = std::to_string(_vida);
+	os << strVida << " ";
+	
+	std::string strCuantoPega = std::to_string(_cuantoPega);
+	os << strCuantoPega << " }";
+}
+
+void Vampiro::Cargar(std::istream& is)
+{
+}
+
+bool Vampiro::vidaEnRango(int v){
+	return (v >= 0 && v <= 100);
+}
+
+void Vampiro::ponerVidaEnRango(int& v){
+	if(v < 0){
+		v = 0;
+	} else {
+		v = 100;
+	}
+}
+
+bool Vampiro::cuantoPegaEnRango(int cP){
+	return (cP > 0);
+}
+
+void Vampiro::ponerCuantoPegaEnRango(int& cP){
+	cP = 1;
+}

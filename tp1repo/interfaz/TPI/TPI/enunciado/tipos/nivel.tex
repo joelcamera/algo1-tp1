@@ -1,0 +1,22 @@
+\begin{tipo}{Nivel}{}
+	\observador{ancho}{n: Nivel}{\ent}
+	\observador{alto}{n: Nivel}{\ent}
+	\observador{turno}{n: Nivel}{\ent}
+	\observador{soles}{n: Nivel}{\ent}
+	\observador{flores}{n: Nivel}{[(Flor, Posicion, Vida)]}
+	\observador{vampiros}{n: Nivel}{[(Vampiro, Posicion, Vida)]}
+	\observador{spawning}{n: Nivel}{[(Vampiro, \ent, \ent)]}
+	\invariante[valoresRazonables]{ancho(n) > 0 \land alto(n) > 0 \land soles(n) \geq 0 \land turno(n) \geq 0}
+\invariante[posicionesValidas]{
+	vampirosEnCuadricula(n) \wedge floresEnCuadricula(n)
+}
+\invariante[spawningOrdenado]{
+		\\
+		duplasOrdenadas(
+			[(turnoSpawn(spawn), filaSpawn(spawn)) | \selector{spawn}{spawning(n)}]
+		)
+	}
+	\invariante[necesitoMiEspacio]{(\forall i,j \selec [0..|flores(n)|), i \neq j) sgd(flores(n)_i) \neq sgd(flores(n)_j)}
+	\invariante[vivosPeroNoTanto]{vidaFloresOk(flores(n)) \land vidaVampirosOk(vampiros(n))}
+	\invariante[spawneanBien]{(\forall t \selec spawning(n))sgd(t)\geq 1 \land sgd(t) \leq alto(n) \land trd(t)\geq 0}
+\end{tipo}

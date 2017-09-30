@@ -1,0 +1,259 @@
+#include "Nivel.h"
+#include <cassert>
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+Nivel::Nivel()
+{
+}
+
+Nivel::Nivel(int ancho, int alto, int soles, std::vector<VampiroEnEspera>& spawninglist)
+{
+	//vectores _flores y _vampiros no se agregan aca, empiezan vacias 
+	this->_ancho = ancho;
+	this->_alto = alto;
+	this->_turno = 0;
+	this->_soles = soles;	
+	this->_vampiros = std::vector<VampiroEnJuego>();
+	this->_flores = std::vector<FlorEnJuego>();
+	this->_spawning = ordenarSpawning(spawninglist); // Se cumple invariante de spawningOrdenado
+	cout << "Nivel creado con spawning ordenado: " << endl;
+	int i = 0;
+	while(i < this->_spawning.size()){
+		cout << "Spawn " << i << " - Turno: " << this->_spawning.at(i).turno << " / Fila : " << this->_spawning.at(i).fila << endl;
+		i++;	
+	}
+}
+
+int Nivel::anchoN()
+{
+	return _ancho;
+}
+
+int Nivel::altoN()
+{
+	return _alto;
+}
+
+int Nivel::turnoN()
+{
+	return _turno;
+}
+
+int Nivel::solesN()
+{
+	return _soles;
+}
+
+std::vector<FlorEnJuego>& Nivel::floresN()
+{
+	return _flores;
+}
+
+std::vector<VampiroEnJuego>& Nivel::vampirosN()
+{
+	return _vampiros;
+}
+
+std::vector<VampiroEnEspera>& Nivel::spawningN()
+{
+	return _spawning;
+}
+
+void Nivel::agregarFlor(Flor f, Posicion p)
+{
+	FlorEnJuego x = FlorEnJuego(f, p, f.vidaF());
+	_flores.push_back(x);
+}
+
+void Nivel::pasarTurno()
+{
+	Habilidad habilidad = Generar;
+	this->_soles = this->_soles + cantidadFloresConHabilidad(habilidad) + 1;
+}
+
+bool Nivel::terminado()
+{
+}
+
+bool Nivel::obsesivoCompulsivo()
+{
+	vector<FlorEnJuego> ord=_flores;
+	int i=0, j;
+		FlorEnJuego temp;
+		while (i<ord.size()) {
+			j=i+1;
+			while (j<ord.size()){
+				if (ord[j].pos.fila < ord[i].pos.fila or
+				(ord[j].pos.fila == ord[i].pos.fila and
+				ord[j].pos.columna < ord[i].pos.columna)){
+					temp=ord[i];
+					ord[i]=ord[j];
+					ord[j]=temp;
+				}
+				j++;
+			}
+			i++;
+		}
+
+    i=0;
+
+	while (i < ord.size()-1){
+		if (florAtaca(ord[i])==florAtaca(ord[i+1])){
+				return false;
+			}
+		i++;
+		}
+	return true;
+
+}
+
+
+bool Nivel::florAtaca (FlorEnJuego f){
+	int i=0;
+	while (i<f.flor.habilidadesF().size()) {
+		if (f.flor.habilidadesF()[i]==Atacar) return true;
+		i++;
+	}
+	return false;
+}
+
+void Nivel::Mostrar(std::ostream& os)
+{	
+}
+
+void Nivel::Guardar(std::ostream& os)
+{
+	os << "{ N ";
+	os << this->_ancho << " ";
+	os << this->_alto << " ";
+	os << this->_turno << " ";
+	os << this->_soles << " [ ";
+
+	if(_flores.size() == 0){
+		os << "] ";
+	} else {
+		int i = 0;
+		while(i < _flores.size()){
+			_flores.at(i).flor.Mostrar(os);
+			os << " ";
+			i++;
+		}
+		os << "] ";
+	}
+
+	os << "[ ";
+
+	if(_vampiros.size() == 0){
+		os << "] ";
+	} else {
+		int j = 0;
+		while(j < _vampiros.size()){
+			_vampiros.at(j).vampiro.Mostrar(os);
+			os << " (";
+			os << _vampiros.at(j).pos.fila << " ";
+			os << _vampiros.at(j).pos.columna << " )";
+			j++;
+		}
+		os << " ] ";
+	}
+
+	os << "[ ";
+
+	if(_spawning.size() == 0){
+		os << "] ";
+	} else {
+		int k = 0;
+		while(k < _spawning.size()){
+			os << "( ";
+			_spawning.at(k).vampiro.Mostrar(os);
+			os << " ";
+			os << _spawning.at(k).fila << " ";
+			os << _spawning.at(k).turno << " ";
+			k++;
+			os << ") ";
+		}
+		os << "] }";
+	}
+}
+
+void Nivel::Cargar(std::istream& is)
+{
+}
+
+std::vector<VampiroEnEspera> Nivel::ordenarSpawning(std::vector<VampiroEnEspera> spawning){
+	return ordenarPorTurnoYFila(spawning);	
+}
+
+std::vector<VampiroEnEspera> Nivel::ordenarPorTurnoYFila(std::vector<VampiroEnEspera> spawning){	
+	std::vector<VampiroEnEspera> spawningFinal = std::vector<VampiroEnEspera>();
+	std::vector<VampiroEnEspera> spawningAuxiliar = spawning;
+	int i = 0;
+	while(i < spawning.size()){
+		int j = 0;
+		while(j < spawning.size()){
+			VampiroEnEspera spawningSeleccionado = spawningAuxiliar.at(j);
+			if(tieneTurnoMinimo(spawningSeleccionado, spawningAuxiliar)){
+				spawningFinal.push_back(spawningSeleccionado);	
+				spawningAuxiliar = eliminarSpawning(spawningAuxiliar, spawningSeleccionado);
+				break;
+			}
+			j++;
+		}
+		i++;
+	}
+	return spawningFinal;
+}
+
+bool Nivel::tieneTurnoMinimo(VampiroEnEspera v1, std::vector<VampiroEnEspera> spawning){
+	bool result = true;
+	int i = 0;
+	while(i < spawning.size()){
+		if(spawning.at(i).turno < v1.turno || (spawning.at(i).turno == v1.turno && spawning.at(i).fila < v1.fila)){
+			result = false;
+			break;
+		}
+		i++;
+	}	
+	return result;
+}
+
+std::vector<VampiroEnEspera> Nivel::eliminarSpawning(std::vector<VampiroEnEspera> lista, VampiroEnEspera vampiro){
+	std::vector<VampiroEnEspera> listaReturn = std::vector<VampiroEnEspera>();
+	int i = 0;	
+	while(i < lista.size()){
+		if(!igualesVampiros(lista.at(i), vampiro)){
+			listaReturn.push_back(lista.at(i));	
+		}
+		i++;	
+	}
+	return listaReturn;
+}
+
+bool Nivel::igualesVampiros(VampiroEnEspera v1, VampiroEnEspera v2){
+	if(v1.vampiro.claseV() == v2.vampiro.claseV() &&
+			v1.fila == v2.fila &&
+			v1.turno == v2.turno){
+		return true;
+	}
+	return false;
+}
+
+int Nivel::cantidadFloresConHabilidad(Habilidad habilidad){
+	std::vector<FlorEnJuego> floresConHabilidad = std::vector<FlorEnJuego>();
+	int i = 0;
+	while(i < this->_flores.size()){
+		FlorEnJuego florSeleccionada = this->_flores.at(i);
+		std::vector<Habilidad> habilidadesFlorSeleccionada = florSeleccionada.flor.habilidadesF();
+		int j = 0;
+		while(j < habilidadesFlorSeleccionada.size()){
+			if(habilidadesFlorSeleccionada.at(j) == habilidad){
+				floresConHabilidad.push_back(florSeleccionada); // No hace falta break por el invariante que asegura habilidades no repetidas.	
+			}	
+		}	
+		i++;	
+	}
+	return floresConHabilidad.size();
+}
